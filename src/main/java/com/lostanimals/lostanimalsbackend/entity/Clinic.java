@@ -3,6 +3,7 @@ package com.lostanimals.lostanimalsbackend.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "CLINIC")
 public class Clinic {
 
     @Id
@@ -52,5 +53,15 @@ public class Clinic {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "Clinic{" +
+                "clinicId=" + clinicId +
+                ", name='" + name + '\'' +
+                ", contactInformation='" + contactInformation + '\'' +
+                ", location=" + location +
+                '}';
     }
 }

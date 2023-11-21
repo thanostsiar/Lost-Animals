@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "CHAT_CONVERSATION")
 public class ChatConversation {
 
     @Id
@@ -23,9 +24,6 @@ public class ChatConversation {
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
     private Set<ChatMessage> messages = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "animal_id")
-    private Animal animal;
 
     public ChatConversation() {
     }
@@ -54,11 +52,12 @@ public class ChatConversation {
         this.messages = messages;
     }
 
-    public Animal getAnimal() {
-        return animal;
-    }
-
-    public void setAnimal(Animal animal) {
-        this.animal = animal;
+    @Override
+    public String toString() {
+        return "ChatConversation{" +
+                "conversationId=" + conversationId +
+                ", participants=" + participants +
+                ", messages=" + messages +
+                '}';
     }
 }

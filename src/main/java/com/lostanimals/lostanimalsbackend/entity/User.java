@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "USER")
 public class User {
 
     @Id
@@ -26,7 +27,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Animal> animals = new HashSet<>();
 
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ChatMessage> sentMessages = new HashSet<>();
 
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ChatMessage> receivedMessages = new HashSet<>();
 
     public User() {
 
@@ -71,5 +76,34 @@ public class User {
 
     public void setAnimals(Set<Animal> animals) {
         this.animals = animals;
+    }
+
+    public Set<ChatMessage> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(Set<ChatMessage> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public Set<ChatMessage> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(Set<ChatMessage> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", animals=" + animals +
+                ", sentMessages=" + sentMessages +
+                ", receivedMessages=" + receivedMessages +
+                '}';
     }
 }

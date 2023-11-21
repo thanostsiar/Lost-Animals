@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "LOCATION")
 public class Location {
 
     @Id
@@ -65,5 +66,16 @@ public class Location {
 
     public void setClinics(Set<Clinic> clinics) {
         this.clinics = clinics;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "locationId=" + locationId +
+                ", latitude=" + latitude +
+                ", longtitude=" + longtitude +
+                ", address='" + address + '\'' +
+                ", clinics=" + clinics +
+                '}';
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "CHAT_MESSAGE")
 public class ChatMessage {
 
     @Id
@@ -23,7 +24,6 @@ public class ChatMessage {
 
     @ManyToOne
     @JoinColumn(name = "recipient_id")
-    @Column(name = "RECIPIENT", nullable = false)
     private User recipient;
 
     @ManyToOne
@@ -79,5 +79,17 @@ public class ChatMessage {
 
     public void setConversation(ChatConversation conversation) {
         this.conversation = conversation;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "messageId=" + messageId +
+                ", content='" + content + '\'' +
+                ", timestamp=" + timestamp +
+                ", sender=" + sender +
+                ", recipient=" + recipient +
+                ", conversation=" + conversation +
+                '}';
     }
 }

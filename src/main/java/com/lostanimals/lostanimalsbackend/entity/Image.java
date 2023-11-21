@@ -3,6 +3,7 @@ package com.lostanimals.lostanimalsbackend.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "IMAGE")
 public class Image {
 
     @Id
@@ -41,5 +42,14 @@ public class Image {
 
     public void setAnimal(Animal animal) {
         this.animal = animal;
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "imageId=" + imageId +
+                ", filename='" + filename + '\'' +
+                ", animal=" + animal +
+                '}';
     }
 }
