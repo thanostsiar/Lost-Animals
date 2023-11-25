@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lost-animals</groupId>
-	<artifactId>lost-animals-backend</artifactId>
+	<artifactId>lost.animals</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lost-animals-backend</name>
 	<description>A project on finding lost animals</description>
