@@ -1,41 +1,49 @@
 /* App.css */
 
-.header {
-  background-image: url('Images/pets_home_blurred.jpg'); /* Add your background image URL */
+/* .header {
+  background-image: url('Images/pets_home_blurred.jpg'); 
   background-size: cover;
   background-position: center;
-  color: #ffffff; /* White text color */
+  color: #ffffff; 
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   height: 100vh;
+} */
+
+.header {
+  background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url('Images/pets_home_blurred.jpg');
+  opacity: var(--mainOpacity);
+  height: 30em !important;
 }
 
 .display-5 {
-  font-size: 2.5rem; /* Adjust the font size as needed */
+  font-size: 2.5rem;
+}
+
+.fw-bold {
+  font-weight: bold;
 }
 
 .fs-4 {
-  font-size: 1.25rem; /* Adjust the font size as needed */
-  margin-bottom: 20px; /* Add space between the title and the paragraph */
+  font-size: 1.25rem;
 }
 
-.btn-main-color {
+.main-color {
   background-color: #12330f; /* Bootstrap dark background color */
   border-color: #12330f; /* Bootstrap dark border color */
   color: #ffffff; /* White text color */
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-main-color:hover {
+.main-color:hover {
   background-color: #12330f; /* Slightly darker color on hover */
   border-color: #0c220a; /* Slightly darker border color on hover */
 }
 
-
 .navbar {
-  background-color: #12330f; /* Bootstrap dark background color */
+  background-color: #12330f; 
 }
 
 .navbar-brand {
@@ -47,13 +55,13 @@
 }
 
 .nav-link {
-  color: #ffffff; /* White text color */
+  color: #ffffff; 
   transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #f8f9fa; /* Slightly off-white on hover */
-}
+  color: #f8f9fa;
+} 
 
 .btn-outline-light {
   border-color: #ffffff; /* White border color */
@@ -69,4 +77,21 @@
 /* Optional: Add some padding to the navbar for better spacing */
 .navbar {
   padding: 15px 0;
+}
+
+
+.homepage-carousel-title {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.book-div {
+  width: 480px;
+  height: 384px;
+}
+
+.inactiveLink {
+  pointer-events: none;
+  cursor: default;
 }
