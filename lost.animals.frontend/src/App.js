@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
 import { FindAnimals } from './layouts/HomePage/FindAnimals';
 import { Carousel } from './layouts/HomePage/Carousel';
+import { Heros } from './layouts/HomePage/Heros';
 
 function App () {
   return (
@@ -11,6 +12,7 @@ function App () {
       <Navbar/>
       <FindAnimals/>
       <Carousel/>
+      <Heros/>
     </div>
   );
 };

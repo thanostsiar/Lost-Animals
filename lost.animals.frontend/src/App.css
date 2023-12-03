@@ -44,6 +44,7 @@
 
 .navbar {
   background-color: #12330f; 
+  padding: 15px 0;
 }
 
 .navbar-brand {
@@ -74,11 +75,6 @@
   color: #343a40; /* Dark text color on hover */
 }
 
-/* Optional: Add some padding to the navbar for better spacing */
-.navbar {
-  padding: 15px 0;
-}
-
 
 .homepage-carousel-title {
   display: flex !important;
@@ -86,12 +82,19 @@
   align-items: center !important;
 }
 
-.book-div {
-  width: 480px;
-  height: 384px;
-}
-
 .inactiveLink {
   pointer-events: none;
   cursor: default;
+}
+
+.col-image-left {
+  background-image: url('Images/golder-retriever-puppy.jpeg');
+  height: 35em !important;
+  width: 50em !important;
+}
+
+.col-image-right {
+  background-image: url('Images/4_cats.jpg');
+  height: 25em !important;
+  width: 44em !important;
 }
