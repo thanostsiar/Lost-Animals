@@ -1,4 +1,4 @@
-export const FindAnimals = () => {
+export const ExploreAnimals = () => {
     return (
         <div className='p-5 mb-4 header'>
             <div className='container-fluid py-5 text-white
