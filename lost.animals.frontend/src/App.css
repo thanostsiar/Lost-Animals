@@ -1,38 +1,73 @@
-.App {
-  text-align: center;
-}
+/* App.css */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
+  background-image: url('Images/pets_home_blurred.jpg'); /* Add your background image URL */
+  background-size: cover;
+  background-position: center;
+  color: #ffffff; /* White text color */
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.display-5 {
+  font-size: 2.5rem; /* Adjust the font size as needed */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.fs-4 {
+  font-size: 1.25rem; /* Adjust the font size as needed */
+  margin-bottom: 20px; /* Add space between the title and the paragraph */
 }
+
+.btn-main-color {
+  background-color: #12330f; /* Bootstrap dark background color */
+  border-color: #12330f; /* Bootstrap dark border color */
+  color: #ffffff; /* White text color */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-main-color:hover {
+  background-color: #12330f; /* Slightly darker color on hover */
+  border-color: #0c220a; /* Slightly darker border color on hover */
+}
+
+
+.navbar {
+  background-color: #12330f; /* Bootstrap dark background color */
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.navbar-nav .nav-item {
+  margin: 0 10px;
+}
+
+.nav-link {
+  color: #ffffff; /* White text color */
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #f8f9fa; /* Slightly off-white on hover */
+}
+
+.btn-outline-light {
+  border-color: #ffffff; /* White border color */
+  color: #ffffff; /* White text color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background-color: #ffffff; /* White background on hover */
+  color: #343a40; /* Dark text color on hover */
+}
+
+/* Optional: Add some padding to the navbar for better spacing */
+.navbar {
+  padding: 15px 0;
+}
+
