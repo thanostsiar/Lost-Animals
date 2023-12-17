@@ -14,11 +14,10 @@ public class Clinic {
     private String name;
 
     @Column(name = "CONTACT_INFO", nullable = false)
-    private String contactInformation;
+    private String contact_information;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @Column(name = "LOCATION", nullable = false)
+    private String location;
 
     public Clinic() {
     }
@@ -39,19 +38,19 @@ public class Clinic {
         this.name = name;
     }
 
-    public String getContactInformation() {
-        return contactInformation;
+    public String getContact_information() {
+        return contact_information;
     }
 
-    public void setContactInformation(String contactInformation) {
-        this.contactInformation = contactInformation;
+    public void setContact_information(String contact_information) {
+        this.contact_information = contact_information;
     }
 
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -60,8 +59,8 @@ public class Clinic {
         return "Clinic{" +
                 "clinicId=" + clinicId +
                 ", name='" + name + '\'' +
-                ", contactInformation='" + contactInformation + '\'' +
-                ", location=" + location +
+                ", contact_information='" + contact_information + '\'' +
+                ", location='" + location + '\'' +
                 '}';
     }
 }
