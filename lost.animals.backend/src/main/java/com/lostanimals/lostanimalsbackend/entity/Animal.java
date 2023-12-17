@@ -2,7 +2,6 @@ package com.lostanimals.lostanimalsbackend.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,9 +11,9 @@ public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long animalId;
+    private Long id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = true)
     private String name;
 
     @Column(name = "SPECIES", nullable = false)
@@ -23,30 +22,9 @@ public class Animal {
     @Column(name = "BREED", nullable = false)
     private String breed;
 
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @Column(name = "COLOR", nullable = true)
+    private String color;
 
-    @Column(name = "DATE_TIME_LOST_OR_FOUND", nullable = false)
-    private LocalDateTime dateTimeLostOrFound;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
-    private Set<Image> images = new HashSet<>();
-
-    @Override
-    public String toString() {
-        return "Animal{" +
-                "animalId=" + animalId +
-                ", name='" + name + '\'' +
-                ", species='" + species + '\'' +
-                ", breed='" + breed + '\'' +
-                ", description='" + description + '\'' +
-                ", dateTimeLostOrFound=" + dateTimeLostOrFound +
-                ", user=" + user +
-                ", images=" + images +
-                '}';
-    }
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<AnimalAlert> animalAlertSet = new HashSet<>();
 }

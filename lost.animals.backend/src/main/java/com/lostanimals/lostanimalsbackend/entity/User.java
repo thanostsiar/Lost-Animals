@@ -13,10 +13,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String first_name;
+
+    @Column(name = "LAST_NAME", nullable = false)
+    private String last_name;
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
@@ -24,25 +30,11 @@ public class User {
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Animal> animals = new HashSet<>();
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ChatMessage> sentMessages = new HashSet<>();
-
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ChatMessage> receivedMessages = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<AnimalAlert> animalAlerts = new HashSet<>();
 
     public User() {
 
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getUsername() {
@@ -70,40 +62,48 @@ public class User {
         this.email = email;
     }
 
-    public Set<Animal> getAnimals() {
-        return animals;
+    public Long getId() {
+        return id;
     }
 
-    public void setAnimals(Set<Animal> animals) {
-        this.animals = animals;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Set<ChatMessage> getSentMessages() {
-        return sentMessages;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setSentMessages(Set<ChatMessage> sentMessages) {
-        this.sentMessages = sentMessages;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public Set<ChatMessage> getReceivedMessages() {
-        return receivedMessages;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setReceivedMessages(Set<ChatMessage> receivedMessages) {
-        this.receivedMessages = receivedMessages;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public Set<AnimalAlert> getAnimalAlerts() {
+        return animalAlerts;
+    }
+
+    public void setAnimalAlerts(Set<AnimalAlert> animalAlerts) {
+        this.animalAlerts = animalAlerts;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "id=" + id +
                 ", username='" + username + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", animals=" + animals +
-                ", sentMessages=" + sentMessages +
-                ", receivedMessages=" + receivedMessages +
+                ", animalAlerts=" + animalAlerts +
                 '}';
     }
 }
