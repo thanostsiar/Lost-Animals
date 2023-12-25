@@ -1,3 +1,4 @@
+import React from 'react';
 import { ReturnAnimal } from './ReturnAnimal';
 
 export const Carousel = () => {
