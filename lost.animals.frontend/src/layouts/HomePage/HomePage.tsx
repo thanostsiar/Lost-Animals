@@ -1,3 +1,4 @@
+import React from "react";
 import { Carousel } from "./components/Carousel";
 import { ExploreAnimals } from "./components/ExploreAnimals";
 import { Heros } from "./components/Heros";

@@ -1,3 +1,5 @@
+import React from "react";
+
 export const ExploreAnimals = () => {
     return (
         <div className='p-5 mb-4 header'>
