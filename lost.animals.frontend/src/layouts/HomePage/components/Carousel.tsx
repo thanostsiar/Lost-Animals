@@ -12,7 +12,7 @@ export const Carousel = () => {
 
     useEffect(() => {
         const fetchAlerts = async () => {
-            const baseUrl: string = "http://localhost:8080/api/animal-alerts";
+            const baseUrl: string = "http://localhost:8080/api/animal-alerts/search/findAll";
 
             const url: string = `${baseUrl}`;
 
@@ -23,8 +23,6 @@ export const Carousel = () => {
             }
 
             const responseJson = await response.json();
-
-            //const responseData = responseJson.id;
 
             const loadedAlerts: AnimalAlertModel[] = [];
 
