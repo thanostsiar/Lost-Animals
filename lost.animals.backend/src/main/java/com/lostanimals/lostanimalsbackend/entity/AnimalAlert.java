@@ -1,5 +1,7 @@
 package com.lostanimals.lostanimalsbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +11,9 @@ public class AnimalAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "TITLE", nullable = false)
+    private String title;
 
     @Column(name = "DESCRIPTION", nullable = true)
     private String description;
@@ -24,10 +29,12 @@ public class AnimalAlert {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "animal_id")
+    @JsonManagedReference
     private Animal animal;
 
     public AnimalAlert() {
@@ -39,6 +46,14 @@ public class AnimalAlert {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -93,6 +108,7 @@ public class AnimalAlert {
     public String toString() {
         return "AnimalAlert{" +
                 "id=" + id +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", picture_url='" + picture_url + '\'' +
                 ", chip_number='" + chip_number + '\'' +

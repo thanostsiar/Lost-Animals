@@ -14,8 +14,9 @@
 
 .header {
   background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url('Images/pets_home_blurred.jpg');
+  background-size:cover;  
   opacity: var(--mainOpacity);
-  height: 30em !important;
+  height: 35em !important;
 }
 
 .display-5 {
