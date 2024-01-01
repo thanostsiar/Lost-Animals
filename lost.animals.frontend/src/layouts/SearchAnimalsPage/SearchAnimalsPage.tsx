@@ -24,7 +24,7 @@ export const SearchAnimalsPage = () => {
             let url: string = '';
 
             if (searchUrl === '') {
-                url = baseUrl + '/findAll';
+                url = baseUrl;
             } else {
                 url = baseUrl + searchUrl;
             }

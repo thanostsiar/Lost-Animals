@@ -23,7 +23,7 @@ public class AnimalAlertController {
         this.animalAlertService = animalAlertService;
     }
 
-    @GetMapping("/search/findAll")
+    @GetMapping("/search")
     public ResponseEntity<List<AnimalAlert>> getAllAnimalAlerts() {
         List<AnimalAlert> animalAlerts = animalAlertService.getAllAnimalAlerts();
         return ResponseEntity.ok(animalAlerts);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReturnAnimal } from './ReturnAnimal';
+import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import AnimalAlertModel from '../../../models/AnimalAlertModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
@@ -12,7 +13,7 @@ export const Carousel = () => {
 
     useEffect(() => {
         const fetchAlerts = async () => {
-            const baseUrl: string = "http://localhost:8080/api/animal-alerts/search/findAll";
+            const baseUrl: string = "http://localhost:8080/api/animal-alerts/search";
 
             const url: string = `${baseUrl}`;
 
@@ -114,7 +115,7 @@ export const Carousel = () => {
                 </div>
             </div>
             <div className='homepage-carousel-title mt-3'>
-                <a className='btn btn-outline-secondary btn-lg' href='#'>View More</a>
+                <Link className='btn btn-outline-secondary btn-lg' to='/search'>View More</Link>
             </div>
         </div>
     );
