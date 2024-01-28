@@ -9,36 +9,50 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    /*@Bean
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // Disable Cross Site Request Forgery
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(cors -> corsConfigurationSource());
 
-        // Protect endpoints at /api/<type>/secure
-        http.authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers("/api/animal-alerts/secure/**").hasAnyRole("USER")
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-
-        // Add CORS filters
-        http.cors(cors -> {});
-
-        // Add content negotiation strategy
-        http.setSharedObject(ContentNegotiationStrategy.class,
-                new HeaderContentNegotiationStrategy());
-
-        // Force a non-empty response body for 401's to make the response friendly
-        Okta.configureResourceServer401ResponseBody(http);
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+                        authorizationManagerRequestMatcherRegistry
+                                .requestMatchers("/api/animal-alerts/search/**").permitAll()
+                                .requestMatchers("/api/animal-alerts/secure/**").permitAll()
+                                .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
-    }*/
+
+    }
 }

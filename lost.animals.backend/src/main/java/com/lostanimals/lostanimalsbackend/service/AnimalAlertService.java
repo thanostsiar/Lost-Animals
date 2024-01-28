@@ -4,7 +4,7 @@ import com.lostanimals.lostanimalsbackend.entity.Animal;
 import com.lostanimals.lostanimalsbackend.entity.AnimalAlert;
 import com.lostanimals.lostanimalsbackend.entity.User;
 import com.lostanimals.lostanimalsbackend.repository.AnimalAlertRepository;
-import com.lostanimals.lostanimalsbackend.requestmodels.AddAlertRequest;
+import com.lostanimals.lostanimalsbackend.model.AddAlertRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class AnimalAlertService {
 
     public AnimalAlert createAnimalAlert(AddAlertRequest addAlertRequest) {
 
-        User user = userService.getUserById(addAlertRequest.getUser().getId());
+        User user = userService.getUserById(addAlertRequest.getUser().getUserId());
         Animal animal = animalService.getAnimalById(addAlertRequest.getAnimal().getId());
 
         AnimalAlert animalAlert = new AnimalAlert();

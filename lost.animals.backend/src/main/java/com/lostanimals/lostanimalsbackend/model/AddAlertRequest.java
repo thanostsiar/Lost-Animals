@@ -1,4 +1,4 @@
-package com.lostanimals.lostanimalsbackend.requestmodels;
+package com.lostanimals.lostanimalsbackend.model;
 
 import com.lostanimals.lostanimalsbackend.entity.Animal;
 import com.lostanimals.lostanimalsbackend.entity.User;

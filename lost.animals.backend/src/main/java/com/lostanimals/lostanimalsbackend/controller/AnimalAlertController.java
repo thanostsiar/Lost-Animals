@@ -1,8 +1,7 @@
 package com.lostanimals.lostanimalsbackend.controller;
 
-import com.lostanimals.lostanimalsbackend.entity.Animal;
 import com.lostanimals.lostanimalsbackend.entity.AnimalAlert;
-import com.lostanimals.lostanimalsbackend.requestmodels.AddAlertRequest;
+import com.lostanimals.lostanimalsbackend.model.AddAlertRequest;
 import com.lostanimals.lostanimalsbackend.service.AnimalAlertService;
 //import com.lostanimals.lostanimalsbackend.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/animal-alerts")
 public class AnimalAlertController {
 

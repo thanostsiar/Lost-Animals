@@ -2,21 +2,23 @@ package com.lostanimals.lostanimalsbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
-    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
     @Column(name = "FIRST_NAME", nullable = false)
@@ -25,20 +27,47 @@ public class User {
     @Column(name = "LAST_NAME", nullable = false)
     private String last_name;
 
-    @Column(name = "PASSWORD", nullable = false)
     private String password;
-
-    @Column(name = "EMAIL", nullable = false, unique = true)
-    private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<AnimalAlert> animalAlerts = new HashSet<>();
 
-    public User() {
+    @ManyToMany
+    @JoinTable(
+            name = "user_role_junction",
+            joinColumns = {@JoinColumn(name = "userId")},
+            inverseJoinColumns = {@JoinColumn(name = "roleId")}
+    )
+    private Set<Role> authorities;
 
+    public User() {
+        super();
+        this.authorities = new HashSet<Role>();
     }
 
+    public User(Long userId, String username, String first_name, String last_name, String password, Set<AnimalAlert> animalAlerts, Set<Role> authorities) {
+        super();
+        this.userId = userId;
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.animalAlerts = animalAlerts;
+        this.authorities = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }
@@ -47,29 +76,36 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFirst_name() {
@@ -96,16 +132,7 @@ public class User {
         this.animalAlerts = animalAlerts;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", animalAlerts=" + animalAlerts +
-                '}';
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 }
