@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,21 +18,14 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userId")
     private Long userId;
 
+    @Column(unique = true)
+    @Email
     private String username;
 
-    @Column(name = "FIRST_NAME", nullable = false)
-    private String first_name;
-
-    @Column(name = "LAST_NAME", nullable = false)
-    private String last_name;
-
     private String password;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Set<AnimalAlert> animalAlerts = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -46,14 +40,11 @@ public class User implements UserDetails {
         this.authorities = new HashSet<Role>();
     }
 
-    public User(Long userId, String username, String first_name, String last_name, String password, Set<AnimalAlert> animalAlerts, Set<Role> authorities) {
+    public User(Long userId, String username, String password, Set<Role> authorities) {
         super();
         this.userId = userId;
         this.username = username;
-        this.first_name = first_name;
-        this.last_name = last_name;
         this.password = password;
-        this.animalAlerts = animalAlerts;
         this.authorities = authorities;
     }
 
@@ -108,29 +99,6 @@ public class User implements UserDetails {
         this.userId = userId;
     }
 
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public Set<AnimalAlert> getAnimalAlerts() {
-        return animalAlerts;
-    }
-
-    public void setAnimalAlerts(Set<AnimalAlert> animalAlerts) {
-        this.animalAlerts = animalAlerts;
-    }
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;

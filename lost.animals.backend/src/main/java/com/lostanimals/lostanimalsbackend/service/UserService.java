@@ -13,20 +13,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
+    @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User is not valid"));
     }
 }

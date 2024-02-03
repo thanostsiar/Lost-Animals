@@ -28,9 +28,9 @@ public class AnimalAlert {
     private String last_location;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     @JsonBackReference
-    private User user;
+    private Owner owner;
 
     @ManyToOne
     @JoinColumn(name = "animal_id")
@@ -88,12 +88,12 @@ public class AnimalAlert {
         this.last_location = last_location;
     }
 
-    public User getUser() {
-        return user;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public Animal getAnimal() {
@@ -113,7 +113,7 @@ public class AnimalAlert {
                 ", picture_url='" + picture_url + '\'' +
                 ", chip_number='" + chip_number + '\'' +
                 ", last_location='" + last_location + '\'' +
-                ", user=" + user +
+                ", owner=" + owner +
                 ", animal=" + animal +
                 '}';
     }

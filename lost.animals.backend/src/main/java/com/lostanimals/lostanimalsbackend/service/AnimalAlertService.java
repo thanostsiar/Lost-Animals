@@ -42,11 +42,11 @@ public class AnimalAlertService {
 
     public AnimalAlert createAnimalAlert(AddAlertRequest addAlertRequest) {
 
-        User user = userService.getUserById(addAlertRequest.getUser().getUserId());
+        //User user = userService.getUserById(addAlertRequest.getUser().getUserId());
         Animal animal = animalService.getAnimalById(addAlertRequest.getAnimal().getId());
 
         AnimalAlert animalAlert = new AnimalAlert();
-        animalAlert.setUser(user);
+        //animalAlert.setUser(user);
         animalAlert.setAnimal(animal);
         animalAlert.setDescription(addAlertRequest.getDescription());
         animalAlert.setPicture_url(addAlertRequest.getPicture_url());
