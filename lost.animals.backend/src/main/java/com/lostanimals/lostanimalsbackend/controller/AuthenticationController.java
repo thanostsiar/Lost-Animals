@@ -1,10 +1,12 @@
 package com.lostanimals.lostanimalsbackend.controller;
 
-import com.lostanimals.lostanimalsbackend.dto.LoginResponseDTO;
-import com.lostanimals.lostanimalsbackend.dto.UserRegistrationDTO;
+import com.lostanimals.lostanimalsbackend.dto.*;
 import com.lostanimals.lostanimalsbackend.entity.User;
 import com.lostanimals.lostanimalsbackend.service.AuthenticationService;
+import com.lostanimals.lostanimalsbackend.service.Impl.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,16 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    @Autowired
     private AuthenticationService authenticationService;
 
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
     @PostMapping("/register")
-    public User registerUser(@RequestBody UserRegistrationDTO body) {
-        return authenticationService.registerUser(body.getUsername(), body.getPassword());
+    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDto){
+        String response = authenticationService.register(registerDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO loginUser(@RequestBody UserRegistrationDTO body){
-        return authenticationService.loginUser(body.getUsername(), body.getPassword());
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDTO loginDto){
+        String token = authenticationService.login(loginDto);
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 }

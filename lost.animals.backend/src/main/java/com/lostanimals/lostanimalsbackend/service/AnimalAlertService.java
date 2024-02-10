@@ -24,36 +24,9 @@ public class AnimalAlertService {
         this.animalService = animalService;
     }
 
-    /*public AnimalAlert createAnimalAlert(Long userId, Long animalId, String description, String pictureUrl, String chipNumber, String lastKnownLocation) {
-
-        User user = userService.getUserById(userId);
-        Animal animal = animalService.getAnimalById(animalId);
-
-        AnimalAlert animalAlert = new AnimalAlert();
-        animalAlert.setUser(user);
-        animalAlert.setAnimal(animal);
-        animalAlert.setDescription(description);
-        animalAlert.setPicture_url(pictureUrl);
-        animalAlert.setChip_number(chipNumber);
-        animalAlert.setLast_location(lastKnownLocation);
-
-        return animalAlertRepository.save(animalAlert);
-    }*/
-
-    public AnimalAlert createAnimalAlert(AddAlertRequest addAlertRequest) {
-
-        //User user = userService.getUserById(addAlertRequest.getUser().getUserId());
-        Animal animal = animalService.getAnimalById(addAlertRequest.getAnimal().getId());
-
-        AnimalAlert animalAlert = new AnimalAlert();
-        //animalAlert.setUser(user);
-        animalAlert.setAnimal(animal);
-        animalAlert.setDescription(addAlertRequest.getDescription());
-        animalAlert.setPicture_url(addAlertRequest.getPicture_url());
-        animalAlert.setChip_number(addAlertRequest.getChip_number());
-        animalAlert.setLast_location(addAlertRequest.getLast_location());
-
-        return animalAlertRepository.save(animalAlert);
+    public AnimalAlert createAlert(AnimalAlert alert) {
+        // Add any business logic here if necessary
+        return animalAlertRepository.save(alert);
     }
 
     public List<AnimalAlert> getAllAnimalAlerts() {

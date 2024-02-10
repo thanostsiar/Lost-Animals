@@ -39,21 +39,15 @@ public class AnimalAlertController {
         return ResponseEntity.ok(alerts);
     }
 
-    /*@PostMapping("/createAlert")
-    public ResponseEntity<AnimalAlert> createAnimalAlert(@RequestParam Long userId,
-                                                         @RequestParam Long animalId,
-                                                         @RequestParam String description,
-                                                         @RequestParam String pictureUrl,
-                                                         @RequestParam String chipNumber,
-                                                         @RequestParam String lastKnownLocation) {
+    @PostMapping("/createAlert")
+    public ResponseEntity<AnimalAlert> createAnimalAlert(@RequestBody AnimalAlert animalAlert) {
 
-        AnimalAlert createdAlert = animalAlertService.createAnimalAlert(
-                userId, animalId, description, pictureUrl, chipNumber, lastKnownLocation);
+        AnimalAlert newAlert = animalAlertService.createAlert(animalAlert);
 
-        return ResponseEntity.ok(createdAlert);
-    }*/
+        return ResponseEntity.ok(newAlert);
+    }
 
-    @PostMapping("/secure/createAlert")
+    /*@PostMapping("/secure/createAlert")
     public AnimalAlert createAnimalAlert(@RequestBody AddAlertRequest addAlertRequest,
                                          @RequestHeader(value = "Authorization") String token) throws  Exception{
 
@@ -61,5 +55,5 @@ public class AnimalAlertController {
         //String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
 
         return animalAlertService.createAnimalAlert(addAlertRequest);
-    }
+    }*/
 }

@@ -21,7 +21,7 @@ public class LostAnimalsBackendApplication {
 		SpringApplication.run(LostAnimalsBackendApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncode){
 		return args ->{
 			if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
@@ -35,6 +35,6 @@ public class LostAnimalsBackendApplication {
 
 			userRepository.save(admin);
 		};
-	}
+	}*/
 
 }
