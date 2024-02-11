@@ -1,7 +1,10 @@
 package com.lostanimals.lostanimalsbackend.service;
 
+import com.lostanimals.lostanimalsbackend.entity.Animal;
 import com.lostanimals.lostanimalsbackend.entity.AnimalAlert;
+import com.lostanimals.lostanimalsbackend.entity.User;
 import com.lostanimals.lostanimalsbackend.repository.AnimalAlertRepository;
+import com.lostanimals.lostanimalsbackend.model.AddAlertRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +14,19 @@ import java.util.List;
 public class AnimalAlertService {
 
     private final AnimalAlertRepository animalAlertRepository;
+    private final UserService userService;
+    private final AnimalService animalService;
 
     @Autowired
-    public AnimalAlertService(AnimalAlertRepository animalAlertRepository) {
+    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserService userService, AnimalService animalService) {
         this.animalAlertRepository = animalAlertRepository;
+        this.userService = userService;
+        this.animalService = animalService;
     }
 
-    public void createAnimalAlert(AnimalAlert animalAlert) {
-        // Perform animal alert creation logic
-        animalAlertRepository.save(animalAlert);
+    public AnimalAlert createAlert(AnimalAlert alert) {
+        // Add any business logic here if necessary
+        return animalAlertRepository.save(alert);
     }
 
     public List<AnimalAlert> getAllAnimalAlerts() {

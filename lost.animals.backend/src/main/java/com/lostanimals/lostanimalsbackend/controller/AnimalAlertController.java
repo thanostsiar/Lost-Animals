@@ -1,18 +1,16 @@
 package com.lostanimals.lostanimalsbackend.controller;
 
 import com.lostanimals.lostanimalsbackend.entity.AnimalAlert;
+import com.lostanimals.lostanimalsbackend.model.AddAlertRequest;
 import com.lostanimals.lostanimalsbackend.service.AnimalAlertService;
+//import com.lostanimals.lostanimalsbackend.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/animal-alerts")
 public class AnimalAlertController {
 
@@ -40,4 +38,22 @@ public class AnimalAlertController {
         List<AnimalAlert> alerts = animalAlertService.findAnimalAlertByAnimalSpecies(species);
         return ResponseEntity.ok(alerts);
     }
+
+    @PostMapping("/createAlert")
+    public ResponseEntity<AnimalAlert> createAnimalAlert(@RequestBody AnimalAlert animalAlert) {
+
+        AnimalAlert newAlert = animalAlertService.createAlert(animalAlert);
+
+        return ResponseEntity.ok(newAlert);
+    }
+
+    /*@PostMapping("/secure/createAlert")
+    public AnimalAlert createAnimalAlert(@RequestBody AddAlertRequest addAlertRequest,
+                                         @RequestHeader(value = "Authorization") String token) throws  Exception{
+
+        AnimalAlert createdAlert = animalAlertService.createAnimalAlert(addAlertRequest);
+        //String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+
+        return animalAlertService.createAnimalAlert(addAlertRequest);
+    }*/
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Heros = () => {
     return (
@@ -15,7 +16,7 @@ export const Heros = () => {
                                 Is your pet lost and want to take action? This is the reason why this website was built.
                                 We would love to help you find and your loved animal!
                             </p>
-                            <a className='btn main-color btn-lg text-white' href='#'>Sign up</a>
+                            <Link type='button' className='btn main-color btn-lg text-white' to='/register'>Register</Link>
                         </div>
                     </div>
                 </div>
@@ -48,7 +49,7 @@ export const Heros = () => {
                                 Is your pet lost and want to take action? This is the reason why this website was built.
                                 We would love to help you find and your loved animal!
                             </p>
-                            <a className='btn main-color btn-lg text-white' href='#'>Sign up</a>
+                            <Link type='button' className='btn main-color btn-lg text-white' to='/register'>Register</Link>
                         </div>
                     </div>
                     <div className='m-2'>

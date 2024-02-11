@@ -2,9 +2,12 @@ package com.lostanimals.lostanimalsbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,22 +17,23 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
-    @Column(name = "USERNAME", nullable = false, unique = true)
-    private String username;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @Column(name = "FIRST_NAME", nullable = false)
-    private String first_name;
-
-    @Column(name = "LAST_NAME", nullable = false)
-    private String last_name;
-
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "EMAIL", nullable = false, unique = true)
-    private String email;
+    private String name;
+    private String surname;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId")
+    )
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -39,21 +43,22 @@ public class User {
 
     }
 
-    public String getUsername() {
-        return username;
+    public User(Long userId, String email, String password, String name, String surname, Set<Role> roles, Set<AnimalAlert> animalAlerts) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.roles = roles;
+        this.animalAlerts = animalAlerts;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Long getUserId() {
+        return userId;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -64,28 +69,36 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getName() {
+        return name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<AnimalAlert> getAnimalAlerts() {
@@ -99,12 +112,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", password='" + password + '\'' +
+                "userId=" + userId +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", roles=" + roles +
                 ", animalAlerts=" + animalAlerts +
                 '}';
     }
