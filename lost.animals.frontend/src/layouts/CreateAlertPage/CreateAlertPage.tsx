@@ -1,10 +1,6 @@
-import { useOktaAuth } from '@okta/okta-react';
-import { Redirect } from 'react-router-dom';
 import { AddAnimalAlert } from './components/AddAnimalAlert';
 
 export const CreateAlertPage = () => {
-
-    const { authState } = useOktaAuth();
 
 
     

@@ -1,57 +1,51 @@
 import React from 'react';
 import './App.css';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import { Navbar } from './layouts/NavbarAndFooter/Navbar';
 import { Footer } from './layouts/NavbarAndFooter/Footer';
 import { HomePage } from './layouts/HomePage/HomePage';
 import { SearchAnimalsPage } from './layouts/SearchAnimalsPage/SearchAnimalsPage';
-import { oktaConfig } from './lib/oktaConfig';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
-import LoginWidget from './Auth/LoginWidget';
 import { CreateAlertPage } from './layouts/CreateAlertPage/CreateAlertPage';
+import UserRegistration from './layouts/User/UserRegistration';
+import UserLogin from './layouts/User/UserLogin';
+import { isUserLoggedIn } from './Auth/AuthService';
 
-const oktaAuth = new OktaAuth(oktaConfig);
 
 export const App = () => {
 
-  const customAuthHandler = () => {
-    history.push('/login');
+  function AuthenticatedRoute({children}){
+
+    const isAuth = isUserLoggedIn();
+
+    if(isAuth) {
+      return children;
+    }
+
+    return <Navigate to="/login" />
+
   }
 
-  const history = useHistory();
-
-  const restoreOriginalUri = async (_oktaAuth: any, originalUri: any) => {
-    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
 
   return (
     <div className='d-flex flex-column min-vh-100'>
-      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={customAuthHandler}>
-      <Navbar />
-      <div className='flex-grow-1'>
-        <Switch>
-          <Route path='/' exact>
-            <Redirect to='/home' />
-          </Route>
-          <Route path='/home'>
-            <HomePage />
-          </Route>
-          <Route path='/search'>
-            <SearchAnimalsPage />
-          </Route>
-          <Route path='/createAlert'>
-            <CreateAlertPage />
-          </Route>
-          <Route path='/login' render={
-            () => <LoginWidget config={oktaConfig} /> 
-            } 
-          />
-          <Route path='/login/callback' component={LoginCallback} />
-        </Switch>
-      </div>
-      <Footer />
-    </Security>
+      <BrowserRouter>
+        <Navbar />
+        <div className='flex-grow-1'>
+          <Routes>
+            <Route path='/' element={<Navigate to='/home' replace />} />
+            <Route path='/home' element={<HomePage />} />
+            <Route path='/register' element={<UserRegistration />} />
+            <Route path='/search' element={<SearchAnimalsPage />} />
+            <Route path='/createAlert' element={
+              <AuthenticatedRoute>
+                <CreateAlertPage />
+              </AuthenticatedRoute>
+            }></Route>
+            <Route path='/login' element={<UserLogin />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 };

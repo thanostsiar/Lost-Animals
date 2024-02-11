@@ -1,119 +1,79 @@
-import { useOktaAuth } from '@okta/okta-react';
 import { useState } from 'react';
 import AddAnimalAlertRequest from '../../../models/AddAnimalAlertRequest';
-
-class Animal {
-    name: string;
-    species: string;
-    color: string;
-
-    constructor(data: { name: string; species: string; color: string }) {
-        this.name = data.name;
-        this.species = data.species;
-        this.color = data.color;
-    }
-}
+import axios from 'axios';
 
 
 export const AddAnimalAlert = () => {
 
-    const { authState } = useOktaAuth();
+    const [alertDetails, setAlertDetails] = useState({
+        title: '',
+        description: '',
+        // Assuming the image will be handled as a URL or base64 string
+        image: '',
+        lastKnownLocation: '',
+        animal: {
+            name: '',
+            color: '',
+            species: '',
+            owner: {
+                firstName: '',
+                lastName: '',
+            },
+        },
+    });
 
-    // New Animal
-
-    const [name, setName] = useState('');
-    const [species, setSpecies] = useState('Species');
-    const [color, setColor] = useState('');
-
-
-    // New Animal Alert
-
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [pictureUrl, setPictureUrl] = useState<any>(null)
-    const [chipNumber, setChipNumber] = useState('');
-    const [lastLocation, setLastLocation] = useState('');
-    const [animal, setAnimal] = useState<Animal | null>(null)
 
     // Displays
     const [displayWarning, setDisplayWarning] = useState(false);
     const [displaySuccess, setDisplaySuccess] = useState(false);
 
-    function speciesField(value: string) {
-        setSpecies(value);
-    }
-
-    async function base64ConversionForImages(e: any) {
-        if (e.target.files[0]) {
-            getBase64(e.target.files[0]);
-        }
-    }
-
-    function getBase64(file: any) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            setPictureUrl(reader.result);
-        };
-        reader.onerror = function (error) {
-            console.log('Error', error);
-        }
-    }
-
-    async function submitNewAlert() {
-        try{
-            const url: string = `http://localhost:8080/api/animal-alerts/secure/createAlerts`;
-            if (title !== '' && name !== '' && color !== '' && species !== 'Species' && chipNumber !== '' && lastLocation !== ''
-                && description !== '') {
-                    const newAnimal = new Animal({name, species, color});
-                    setAnimal(newAnimal);
-                    const animalAlert: AddAnimalAlertRequest = new AddAnimalAlertRequest(newAnimal, title, description, chipNumber, lastLocation);
-                    animalAlert.picture_url = pictureUrl;
-                    const requestOptions = {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*'
-                        },
-                        body: JSON.stringify(animalAlert)
-                    };
-    
-                    const submitNewAlertResponse = await fetch(url, requestOptions);
-    
-                    if (!submitNewAlertResponse.ok) {
-                        throw new Error('Something went wrong!');
-                    }
-                    setTitle('');
-                    setName('');
-                    setColor('');
-                    setSpecies('Species');
-                    setChipNumber('');
-                    setLastLocation('');
-                    setDescription('');
-                    setPictureUrl(null);
-                    setAnimal(null);
-                    setDisplaySuccess(true);
-                } else {
-                    setDisplayWarning(true);
-                    setDisplaySuccess(false);
+    const handleChange = (e) => {
+        if (e.target.name.startsWith("animal.")) {
+            // Nested animal and owner updates
+            let path = e.target.name.split(".");
+            setAlertDetails(current => {
+                let newState = { ...current };
+                let target = newState;
+                for (let i = 0; i < path.length - 1; i++) {
+                    target = target[path[i]];
                 }
-        } catch (error) {
-            console.error('Error in submitNewAlert:', error);
-            setDisplayWarning(true);
-            setDisplaySuccess(false);
+                target[path[path.length - 1]] = e.target.value;
+                return newState;
+            });
+        } else if (e.target.type === 'file') {
+            // Handle file input for the image, converting to base64
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setAlertDetails({ ...alertDetails, image: reader.result!.toString() });
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            setAlertDetails({ ...alertDetails, [e.target.name]: e.target.value });
         }
-        
-    }
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/api/animal-alerts/createAlert', alertDetails);
+            console.log('Alert created:', response.data);
+        } catch (error) {
+            console.error('Error creating alert:', error);
+        }
+    };
 
     return (
         <div className='container mt-5 mb-5'>
-            {displaySuccess && 
+            {displaySuccess &&
                 <div className='alert alert-success' role='alert'>
                     Alert created successfully!
                 </div>
             }
-            {displayWarning && 
+            {displayWarning &&
                 <div className='alert alert-danger' role='alert'>
                     All fields must be filled out!
                 </div>
@@ -123,58 +83,44 @@ export const AddAnimalAlert = () => {
                     Create alert
                 </div>
                 <div className='card-body'>
-                    <form method='POST'>
-                        <div className='row'>
-                            <div className='col-md-6 mb-3'>
-                                <label className='form-label'>Title</label>
-                                <input type="text" className='form-control' name='title' required 
-                                    onChange={e => setTitle(e.target.value)} value={title} />
-                            </div>
-                            <div className='col-md-3 mb-3'>
-                                <label className='form-label'> Name </label>
-                                <input type="text" className='form-control' name='name' required 
-                                    onChange={e => setName(e.target.value)} value={name}/>
-                            </div>
-                            <div className='col-md-3 mb-3'>
-                                <label className='form-label'> Color </label>
-                                <input type="text" className='form-control' name='color' required 
-                                    onChange={e => setColor(e.target.value)} value={color}/>
-                            </div>
-                            <div className='col-md-3 mb-3'>
-                                <label className='form-label'> Species</label>
-                                <button className='form-control btn btn-secondary dropdown-toggle' type='button' 
-                                    id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>
-                                        {species}
-                                </button>
-                                <ul id='addNewAlertId' className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
-                                    <li><a onClick={() => speciesField('Dog')} className='dropdown-item'>Dog</a></li>
-                                    <li><a onClick={() => speciesField('Cat')} className='dropdown-item'>Cat</a></li>
-                                    <li><a onClick={() => speciesField('Bird')} className='dropdown-item'>Bird</a></li>
-                                    <li><a onClick={() => speciesField('Fish')} className='dropdown-item'>Fish</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className='col-md-3 mb-3'>
-                                <label className='form-label'> Chip Number </label>
-                                <input type="text" className='form-control' name='chipNumber' required 
-                                    onChange={e => setChipNumber(e.target.value)} value={chipNumber}/>
-                        </div>
-                        <div className='col-md-3 mb-3'>
-                                <label className='form-label'> Last Known Location </label>
-                                <input type="text" className='form-control' name='lastLocation' required 
-                                    onChange={e => setLastLocation(e.target.value)} value={lastLocation}/>
-                        </div>
-                        <div className='col-md-12 mb-3'>
-                            <label className='form-label'>Description</label>
-                            <textarea className='form-control' id='FormControlTextarea1' rows={3} 
-                                onChange={e => setDescription(e.target.value)} value={description}></textarea>
-                        </div>
-                        <input type='file' onChange={e => base64ConversionForImages(e)}/>
+                    <form onSubmit={handleSubmit}>
                         <div>
-                            <button type='button' className='btn btn-primary mt-3' onClick={submitNewAlert}>
-                                Create Alert
-                            </button>
+                            <label htmlFor="title">Title:</label>
+                            <input type="text" id="title" name="title" value={alertDetails.title} onChange={handleChange} />
                         </div>
+                        <div>
+                            <label htmlFor="description">Description:</label>
+                            <textarea id="description" name="description" value={alertDetails.description} onChange={handleChange}></textarea>
+                        </div>
+                        <div>
+                            <label htmlFor="image">Image:</label>
+                            <input type="file" id="image" name="image" value={alertDetails.image} onChange={handleChange} accept="image/*"/>
+                        </div>
+                        <div>
+                            <label htmlFor="lastKnownLocation">Last Known Location:</label>
+                            <input type="text" id="lastKnownLocation" name="lastKnownLocation" value={alertDetails.lastKnownLocation} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="animal.color">Animal Color:</label>
+                            <input type="text" id="animal.color" name="animal.color" value={alertDetails.animal.color} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="animal.name">Animal Name:</label>
+                            <input type="text" id="animal.name" name="animal.name" value={alertDetails.animal.name} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="animal.species">Species:</label>
+                            <input type="text" id="animal.species" name="animal.species" value={alertDetails.animal.species} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="animal.owner.firstName">Owner First Name:</label>
+                            <input type="text" id="animal.owner.firstName" name="animal.owner.firstName" value={alertDetails.animal.owner.firstName} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="animal.owner.lastName">Owner Last Name:</label>
+                            <input type="text" id="animal.owner.lastName" name="animal.owner.lastName" value={alertDetails.animal.owner.lastName} onChange={handleChange} />
+                        </div>
+                        <button type="submit">Create Alert</button>
                     </form>
                 </div>
             </div>
