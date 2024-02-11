@@ -1,5 +1,6 @@
 package com.lostanimals.lostanimalsbackend.service.Impl;
 
+import com.lostanimals.lostanimalsbackend.dto.JwtAuthResponse;
 import com.lostanimals.lostanimalsbackend.dto.LoginDTO;
 import com.lostanimals.lostanimalsbackend.dto.RegisterDTO;
 import com.lostanimals.lostanimalsbackend.entity.Role;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -65,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String login(LoginDTO loginDto) {
+    public JwtAuthResponse login(LoginDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(),
                 loginDto.getPassword()
@@ -73,6 +75,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtTokenProvider.generateToken(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        Optional<User> user = userRepository.findByEmail(loginDto.getEmail());
+
+        String role = null;
+
+        if (user.isPresent()) {
+            User loggedInUser = user.get();
+            Optional<Role> optionalRole = loggedInUser.getRoles().stream().findFirst();
+
+            if (optionalRole.isPresent()) {
+                Role userRole = optionalRole.get();
+                role = userRole.getAuthority();
+            }
+        }
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setRole(role);
+        jwtAuthResponse.setAccessToken(token);
+
+        return jwtAuthResponse;
     }
 }

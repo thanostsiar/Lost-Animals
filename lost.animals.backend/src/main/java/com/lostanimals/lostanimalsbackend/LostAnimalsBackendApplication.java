@@ -20,21 +20,4 @@ public class LostAnimalsBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LostAnimalsBackendApplication.class, args);
 	}
-
-	/*@Bean
-	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncode){
-		return args ->{
-			if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
-			Role adminRole = roleRepository.save(new Role("ADMIN"));
-			roleRepository.save(new Role("USER"));
-
-			Set<Role> roles = new HashSet<>();
-			roles.add(adminRole);
-
-			User admin = new User(1L, "admin", passwordEncode.encode("password"), roles);
-
-			userRepository.save(admin);
-		};
-	}*/
-
 }
