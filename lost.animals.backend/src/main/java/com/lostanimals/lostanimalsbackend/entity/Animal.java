@@ -17,10 +17,10 @@ public class Animal {
     @Column(name = "NAME", nullable = true)
     private String name;
 
-    @Column(name = "SPECIES", nullable = false)
+    @Column(name = "SPECIES", nullable = true)
     private String species;
 
-    @Column(name = "COLOR", nullable = false)
+    @Column(name = "COLOR", nullable = true)
     private String color;
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

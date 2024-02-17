@@ -1,13 +1,16 @@
 package com.lostanimals.lostanimalsbackend.controller;
 
+import com.lostanimals.lostanimalsbackend.dto.AnimalAlertDTO;
 import com.lostanimals.lostanimalsbackend.entity.AnimalAlert;
-import com.lostanimals.lostanimalsbackend.model.AddAlertRequest;
 import com.lostanimals.lostanimalsbackend.service.AnimalAlertService;
-//import com.lostanimals.lostanimalsbackend.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -40,20 +43,16 @@ public class AnimalAlertController {
     }
 
     @PostMapping("/createAlert")
-    public ResponseEntity<AnimalAlert> createAnimalAlert(@RequestBody AnimalAlert animalAlert) {
+    public ResponseEntity<?> createAnimalAlert(@RequestBody AnimalAlertDTO animalAlert) {
 
-        AnimalAlert newAlert = animalAlertService.createAlert(animalAlert);
-
-        return ResponseEntity.ok(newAlert);
+        try {
+            AnimalAlert createdAlert = animalAlertService.createAlert(animalAlert);
+            return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Error creating animal alert: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /*@PostMapping("/secure/createAlert")
-    public AnimalAlert createAnimalAlert(@RequestBody AddAlertRequest addAlertRequest,
-                                         @RequestHeader(value = "Authorization") String token) throws  Exception{
 
-        AnimalAlert createdAlert = animalAlertService.createAnimalAlert(addAlertRequest);
-        //String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
-
-        return animalAlertService.createAnimalAlert(addAlertRequest);
-    }*/
 }
