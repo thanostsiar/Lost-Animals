@@ -9,6 +9,7 @@ import { CreateAlertPage } from './layouts/CreateAlertPage/CreateAlertPage';
 import UserRegistration from './layouts/User/UserRegistration';
 import UserLogin from './layouts/User/UserLogin';
 import { isUserLoggedIn } from './Auth/AuthService';
+import ClinicsInMap from './layouts/Clinic/ClinicsInMap';
 
 
 export const App = () => {
@@ -36,6 +37,7 @@ export const App = () => {
             <Route path='/home' element={<HomePage />} />
             <Route path='/register' element={<UserRegistration />} />
             <Route path='/search' element={<SearchAnimalsPage />} />
+            <Route path='/clinics' element={<ClinicsInMap />} />
             <Route path='/createAlert' element={
               <AuthenticatedRoute>
                 <CreateAlertPage />

@@ -34,6 +34,9 @@ export const Navbar = () => {
             <li className='nav-item'>
               <NavLink className='nav-link' to='/search'>Search Animals</NavLink>
             </li>
+            <li className='nav-item'>
+              <NavLink className='nav-link' to='/clinics'>Clinics</NavLink>
+            </li>
             {
               isAuthenticated && 
               <li className='nav-item'>
@@ -52,7 +55,7 @@ export const Navbar = () => {
             {
               !isAuthenticated &&
               <li className='nav-item m-1'>
-              <Link type='button' className='btn btn-outline-light' to='/register'>Register</Link>
+              <Link type='button' className='btn secondary-color' to='/register'>Register</Link>
             </li>
             }
             {

@@ -1,129 +1,206 @@
-import { useState } from 'react';
-import AddAnimalAlertRequest from '../../../models/AddAnimalAlertRequest';
-import axios from 'axios';
-
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
+import { saveAlert } from '../../../Auth/AnimalAlertService';
+import { getLoggedInUser } from '../../../Auth/AuthService';
+import Compressor from 'image-compressor';
 
 export const AddAnimalAlert = () => {
 
-    const [alertDetails, setAlertDetails] = useState({
+    const [alertData, setAlertData] = useState({
         title: '',
         description: '',
-        // Assuming the image will be handled as a URL or base64 string
         image: '',
-        lastKnownLocation: '',
-        animal: {
-            name: '',
-            color: '',
-            species: '',
-            owner: {
-                firstName: '',
-                lastName: '',
-            },
-        },
+        chipNumber: '',
+        lastLocation: '',
+        name: '',
+        species: '',
+        color: '',
+        userEmail: ''
+
     });
 
+    const navigate = useNavigate();
 
-    // Displays
-    const [displayWarning, setDisplayWarning] = useState(false);
-    const [displaySuccess, setDisplaySuccess] = useState(false);
-
-    const handleChange = (e) => {
-        if (e.target.name.startsWith("animal.")) {
-            // Nested animal and owner updates
-            let path = e.target.name.split(".");
-            setAlertDetails(current => {
-                let newState = { ...current };
-                let target = newState;
-                for (let i = 0; i < path.length - 1; i++) {
-                    target = target[path[i]];
-                }
-                target[path[path.length - 1]] = e.target.value;
-                return newState;
-            });
-        } else if (e.target.type === 'file') {
-            // Handle file input for the image, converting to base64
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setAlertDetails({ ...alertDetails, image: reader.result!.toString() });
-                };
-                reader.readAsDataURL(file);
-            }
-        } else {
-            setAlertDetails({ ...alertDetails, [e.target.name]: e.target.value });
+    useEffect(() => {
+        const email = getLoggedInUser();
+        if (email) {
+            setAlertData(prevState => ({ ...prevState, userEmail: email }));
+            console.log(email)
         }
+    }, []);
+
+
+    const handleChangeElement = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setAlertData(prevState => ({ ...prevState, [name]: value }));
     };
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+
+    const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setAlertData({ ...alertData, [e.target.name]: e.target.value });
+    };
+
+    const handleImage = async (e) => {
+
+        const file = e.target.files[0];
+        if (!file) return;
+
         try {
-            const response = await axios.post('http://localhost:8080/api/animal-alerts/createAlert', alertDetails);
-            console.log('Alert created:', response.data);
+            const compressedFile = await new Compressor(file, {
+                quality: 0.6, // Adjust quality as needed (0.6 is just an example)
+                maxWidth: 800, // Maximum width of the resized image
+                maxHeight: 800, // Maximum height of the resized image
+                mimeType: 'image/jpeg' // Output image format
+            });
+
+            const reader = new FileReader();
+            reader.readAsDataURL(compressedFile);
+            reader.onload = () => {
+                const result = reader.result;
+                setAlertData(prevState => ({ ...prevState, image: result as string }));
+            };
         } catch (error) {
-            console.error('Error creating alert:', error);
+            console.error('Error compressing image:', error);
         }
+        
+        // const reader = new FileReader();
+        // reader.readAsDataURL(e.target.files[0]);
+        // reader.onload = () => {
+        //     //console.log(reader.result);
+        //     const result = reader.result;
+        //     setAlertData(prevState => ({ ...prevState, [e.target.name]: result }));
+        // };
+        // reader.onerror = error => {
+        //     console.log("Error: ", error);
+        // };
     };
+
+
+    const saveNewAlert = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        saveAlert(alertData).then((response) => {
+            console.log(response.data)
+            navigate('/')
+        }).catch(error => {
+            console.error(error);
+        })
+
+    };
+
 
     return (
-        <div className='container mt-5 mb-5'>
-            {displaySuccess &&
-                <div className='alert alert-success' role='alert'>
-                    Alert created successfully!
+        <div className='container'>
+            <br /> <br />
+            <div className='row'>
+                <div className='card col-md-6 offset-md-3 offset-md-3'>
+                    <h2 className='text-center'>Add Alert</h2>
+                    <div className='card-body'>
+                        <form onSubmit={saveNewAlert}>
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Title:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='title'
+                                    value={alertData.title}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Description:</label>
+                                <textarea
+                                    className='form-control'
+                                    name='description'
+                                    value={alertData.description}
+                                    onChange={handleChangeTextArea}
+                                >
+                                </textarea>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Image:</label>
+                                <input
+                                    type='file'
+                                    className='form-control'
+                                    name='image'
+                                    accept='image/*'
+                                    onChange={handleImage}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Chip Number:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='chipNumber'
+                                    value={alertData.chipNumber}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Last Known Location:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='lastLocation'
+                                    value={alertData.lastLocation}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Pet Name:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='name'
+                                    value={alertData.name}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Species:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='species'
+                                    value={alertData.species}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Color:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    name='color'
+                                    value={alertData.color}
+                                    onChange={handleChangeElement}
+                                >
+                                </input>
+                            </div>
+
+                            <button className='btn main-color'>Submit</button>
+                        </form>
+
+                    </div>
                 </div>
-            }
-            {displayWarning &&
-                <div className='alert alert-danger' role='alert'>
-                    All fields must be filled out!
-                </div>
-            }
-            <div className='card'>
-                <div className='card-header'>
-                    Create alert
-                </div>
-                <div className='card-body'>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="title">Title:</label>
-                            <input type="text" id="title" name="title" value={alertDetails.title} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="description">Description:</label>
-                            <textarea id="description" name="description" value={alertDetails.description} onChange={handleChange}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="image">Image:</label>
-                            <input type="file" id="image" name="image" value={alertDetails.image} onChange={handleChange} accept="image/*"/>
-                        </div>
-                        <div>
-                            <label htmlFor="lastKnownLocation">Last Known Location:</label>
-                            <input type="text" id="lastKnownLocation" name="lastKnownLocation" value={alertDetails.lastKnownLocation} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="animal.color">Animal Color:</label>
-                            <input type="text" id="animal.color" name="animal.color" value={alertDetails.animal.color} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="animal.name">Animal Name:</label>
-                            <input type="text" id="animal.name" name="animal.name" value={alertDetails.animal.name} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="animal.species">Species:</label>
-                            <input type="text" id="animal.species" name="animal.species" value={alertDetails.animal.species} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="animal.owner.firstName">Owner First Name:</label>
-                            <input type="text" id="animal.owner.firstName" name="animal.owner.firstName" value={alertDetails.animal.owner.firstName} onChange={handleChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="animal.owner.lastName">Owner Last Name:</label>
-                            <input type="text" id="animal.owner.lastName" name="animal.owner.lastName" value={alertDetails.animal.owner.lastName} onChange={handleChange} />
-                        </div>
-                        <button type="submit">Create Alert</button>
-                    </form>
-                </div>
+
             </div>
         </div>
-    )
-}
+    );
+};

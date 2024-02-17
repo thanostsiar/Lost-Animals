@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { loginAPICall, saveLoggedInUser, storeToken } from "../../Auth/AuthService";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const UserLogin = () => {
@@ -99,6 +99,10 @@ const UserLogin = () => {
                                 <div className='form-group mb-3'>
                                     <button className='btn main-color' onClick={(e) => handleLoginForm(e)}>Submit</button>
                                 </div>
+
+                                <div className="text-center">
+                                        <p>Don't have an account? <Link type="text" style={{color: '#12330f'}} to="/register">Register</Link></p>
+                                    </div>
                             </form>
                         </div>
                     </div>
