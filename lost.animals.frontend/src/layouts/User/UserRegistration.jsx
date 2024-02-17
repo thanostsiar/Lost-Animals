@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { registerAPICall } from "../../Auth/AuthService";
+import { Link } from "react-router-dom";
 
 const UserRegistration = () => {
 
@@ -11,6 +12,39 @@ const UserRegistration = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordValidations, setPasswordValidations] = useState({
+        length: false,
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        specialChar: false
+    });
+
+    const validatePassword = (value) => {
+        const validations = {
+            length: value.length >= 6,
+            uppercase: /[A-Z]/.test(value),
+            lowercase: /[a-z]/.test(value),
+            number: /\d/.test(value),
+            specialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value)
+        };
+
+        setPasswordValidations(validations);
+
+        // Check if all validations are true
+        for (const key in validations) {
+            if (!validations[key]) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const handlePasswordChange = (value) => {
+        setPassword(value);
+        validatePassword(value);
+    };
+
 
     function registerUser(e) {
 
@@ -25,6 +59,20 @@ const UserRegistration = () => {
         // Check if passwords match
         if (password !== confirmPassword) {
             setError('Passwords do not match!');
+            return;
+        }
+
+        // Check if email format is valid
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address!');
+            return;
+        }
+
+        // Check if password format is valid
+        if (!validatePassword(password)) {
+            setError('Please input the correct format for the password field!');
             return;
         }
 
@@ -82,7 +130,7 @@ const UserRegistration = () => {
                                     <div className="row mb-3">
                                         <label className="col-md-3 control-label">Password</label>
                                         <div className="col-md-9 input-group">
-                                            <input type={showPassword ? 'text' : 'password'} name="password" className="form-control" value={password} onChange={ (e) => setPassword(e.target.value) }></input>
+                                            <input type={showPassword ? 'text' : 'password'} name="password" className="form-control" value={password} onChange={ (e) => handlePasswordChange(e.target.value) }></input>
                                             <div className="input-group-append">
                                                 <button type="button" onClick={toggleShowPassword} className="btn btn-outline-secondary">{showPassword ? 'Hide' : 'Show'}</button>
                                             </div>
@@ -97,11 +145,37 @@ const UserRegistration = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="row mb-3">
+                                        <div className="col-md-3"></div>
+                                        <div className="col-md-9 input-group">
+                                            <ul>
+                                                <li className={passwordValidations.length ? 'text-success' : 'text-danger'}>
+                                                    At least 6 characters long
+                                                </li>
+                                                <li className={passwordValidations.uppercase ? 'text-success' : 'text-danger'}>
+                                                    At least one uppercase letter
+                                                </li>
+                                                <li className={passwordValidations.lowercase ? 'text-success' : 'text-danger'}>
+                                                    At least one lowercase letter
+                                                </li>
+                                                <li className={passwordValidations.number ? 'text-success' : 'text-danger'}>
+                                                    At least one number
+                                                </li>
+                                                <li className={passwordValidations.specialChar ? 'text-success' : 'text-danger'}>
+                                                    At least one special character
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
                                     {error && <div className="alert alert-danger" role="alert">{error}</div>}
                                     
                                     <div className="form-group mb-9">
-                                        <button className="btn main-color" onClick={ (e) => registerUser(e) }>Submit</button>
+                                        <button className="btn btn-outline-dark" onClick={ (e) => registerUser(e) }>Submit</button>
+                                    </div>
+
+                                    <div className="text-center">
+                                        <p>Already have an account? <Link type="text" style={{color: '#12330f'}} to="/login">Login</Link></p>
                                     </div>
                                 </form>
                             </div>

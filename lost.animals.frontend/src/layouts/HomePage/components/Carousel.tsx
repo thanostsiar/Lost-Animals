@@ -50,7 +50,7 @@ export const Carousel = () => {
 
     if (isLoading) {
         return (
-            <SpinnerLoading/>
+            <SpinnerLoading />
         )
     }
 
@@ -76,23 +76,26 @@ export const Carousel = () => {
                     <div className='carousel-item active'>
                         <div className='row d-flex justify-content-center align-items-center'>
                             {animalAlerts.slice(0, 3).map(animalAlert => (
-                                <ReturnAnimal animalAlert = {animalAlert} key = {animalAlert.id} />
+                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
                             ))}
                         </div>
                     </div>
                     <div className='carousel-item'>
                         <div className='row d-flex justify-content-center align-items-center'>
                             {animalAlerts.slice(3, 6).map(animalAlert => (
-                                    <ReturnAnimal animalAlert = {animalAlert} key = {animalAlert.id} />
-                                ))}
+                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
+                            ))}
                         </div>
                     </div>
                     <div className='carousel-item'>
                         <div className='row d-flex justify-content-center align-items-center'>
                             {animalAlerts.slice(6, 9).map(animalAlert => (
-                                    <ReturnAnimal animalAlert = {animalAlert} key = {animalAlert.id} />
-                                ))}
+                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
+                            ))}
                         </div>
+                    </div>
+                    <div className='homepage-carousel-title mt-3'>
+                        <Link className='btn btn-outline-secondary btn-lg' to='/search'>View More</Link>
                     </div>
                 </div>
                 <button className='carousel-control-prev' type='button'
@@ -111,7 +114,7 @@ export const Carousel = () => {
 
             <div className='d-lg-none mt-3'>
                 <div className='row d-flex justify-content-center align-items-center'>
-                    <ReturnAnimal animalAlert={animalAlerts[0]} key = {animalAlerts[0].id}/>
+                    <ReturnAnimal animalAlert={animalAlerts[0]} key={animalAlerts[0].id} />
                 </div>
             </div>
             <div className='homepage-carousel-title mt-3'>

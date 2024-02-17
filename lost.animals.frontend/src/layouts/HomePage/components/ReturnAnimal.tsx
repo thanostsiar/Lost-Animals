@@ -22,7 +22,6 @@ export const ReturnAnimal: React.FC<{animalAlert: AnimalAlertModel}> = (props) =
                 }
                 <h6 className='mt-2'>{props.animalAlert.title}</h6>
                 <p>{props.animalAlert.animal.name}</p>
-                <a className='btn main-color text-white' href='#'>View</a>
             </div>
         </div>
     );

@@ -27,12 +27,12 @@ public class AnimalAlert {
     @Column(name = "LAST_LOCATION", nullable = true)
     private String last_location;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "animal_id")
     @JsonManagedReference
     private Animal animal;
