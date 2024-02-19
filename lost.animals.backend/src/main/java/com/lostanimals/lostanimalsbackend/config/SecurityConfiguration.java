@@ -66,10 +66,9 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/api/auth/**").permitAll();
                 auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                auth.requestMatchers("api/animal-alerts/createAlert").permitAll();
+                auth.requestMatchers("api/animal-alerts/createAlert").hasAnyRole("ADMIN", "USER");
                 auth.requestMatchers("api/animal-alerts/search/**").permitAll();
-                /*auth.requestMatchers("api/admin/**").hasRole("ADMIN");
-                auth.requestMatchers("api/user/**").hasAnyRole("ADMIN", "USER");*/
+                auth.requestMatchers(HttpMethod.DELETE, "api/animal-alerts/**").hasRole("ADMIN");
                 auth.anyRequest().authenticated();
             }).httpBasic(Customizer.withDefaults());
 

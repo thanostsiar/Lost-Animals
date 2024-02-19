@@ -1,7 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AnimalAlertModel from "../../../models/AnimalAlertModel";
+import { isAdminUser } from "../../../Auth/AuthService";
+import { deleteAlert, getAllAlerts } from "../../../Auth/AnimalAlertService";
+import React, { useEffect, useState } from "react";
 
 export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props) => {
+
+    const [deleted, setDeleted] = useState<boolean>(false);
+    const isAdmin = isAdminUser();
+    const navigate = useNavigate();
+
+    async function removeAlert(id: number): Promise<void> {
+        try {
+            await deleteAlert(id);
+            setDeleted(true);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    React.useEffect(() => {
+        if (deleted) {
+            getAllAlerts();
+            navigate("/");
+            setDeleted(false);
+        }
+    }, [deleted]);
+    
+
     return (
         <div className='card mt-3 shadow p-3 mb-3 bg-body rounded'>
             <div className='row g-0'>
@@ -51,11 +77,14 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                         </p>
                     </div>
                 </div>
-                {/* <div className='col-md-4 d-flex justify-content-center align-items-center'>
-                    <Link className='btn btn-md main-color text-white' to={`/checkout/${props.animalAlert.id}`}>
-                        View
-                    </Link>
-                </div> */}
+                {
+                    isAdmin && 
+                    <div className='col-md-4 d-flex justify-content-center align-items-center'>
+                    <button className='btn btn-danger' onClick={() => removeAlert(props.animalAlert.id)}>
+                        Delete
+                    </button>
+                </div>
+                }
             </div>
         </div>
     );

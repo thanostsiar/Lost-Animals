@@ -33,7 +33,6 @@ export const Carousel = () => {
                     title: responseJson[key].title,
                     description: responseJson[key].description,
                     picture_url: responseJson[key].picture_url,
-                    chip_number: responseJson[key].chip_number,
                     last_location: responseJson[key].last_location,
                     animal: responseJson[key].animal
                 });

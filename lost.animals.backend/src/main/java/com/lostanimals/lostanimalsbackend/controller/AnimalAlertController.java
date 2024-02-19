@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -52,6 +53,12 @@ public class AnimalAlertController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Error creating animal alert: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteTodo(@PathVariable("id") Long alertId){
+        animalAlertService.deleteAlert(alertId);
+        return ResponseEntity.ok("Alert deleted successfully!.");
     }
 
 

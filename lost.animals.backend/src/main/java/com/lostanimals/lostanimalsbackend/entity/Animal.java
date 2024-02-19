@@ -14,13 +14,16 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME", nullable = true)
+    @Column(name = "CHIP_NUMBER", nullable = false, unique = true)
+    private String chipNumber;
+
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "SPECIES", nullable = true)
+    @Column(name = "SPECIES", nullable = false)
     private String species;
 
-    @Column(name = "COLOR", nullable = true)
+    @Column(name = "COLOR", nullable = false)
     private String color;
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -70,10 +73,19 @@ public class Animal {
         this.animalAlertSet = animalAlertSet;
     }
 
+    public String getChipNumber() {
+        return chipNumber;
+    }
+
+    public void setChipNumber(String chip_number) {
+        this.chipNumber = chip_number;
+    }
+
     @Override
     public String toString() {
         return "Animal{" +
                 "id=" + id +
+                ", chipNumber='" + chipNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", species='" + species + '\'' +
                 ", color='" + color + '\'' +
