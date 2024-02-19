@@ -15,12 +15,12 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
   });
   
-export const getAllAlerts = () => axios.get(base_url)
+export const getAllAlerts = () => axios.get(base_url + '/search');
 
-export const saveAlert = (alert) => axios.post(base_url + '/createAlert', alert)
+export const saveAlert = (alert) => axios.post(base_url + '/createAlert', alert);
 
-export const getAlert = (id) => axios.get(base_url + '/' + id)
+export const getAlert = (id) => axios.get(base_url + '/' + id);
 
-export const updateAlert = (id, alert) => axios.put(base_url + '/' + id, alert)
+export const updateAlert = (id, alert) => axios.put(base_url + '/' + id, alert);
 
-export const deleteAlert = (id) => axios.delete(base_url + '/' + id)
+export const deleteAlert = (id) => axios.delete(base_url + '/' + id);

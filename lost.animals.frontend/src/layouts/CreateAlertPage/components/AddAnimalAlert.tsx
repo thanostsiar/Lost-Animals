@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { saveAlert } from '../../../Auth/AnimalAlertService';
-import { getLoggedInUser } from '../../../Auth/AuthService';
+import { getLoggedInUser, isAdminUser } from '../../../Auth/AuthService';
 import Compressor from 'image-compressor';
 
 export const AddAnimalAlert = () => {
@@ -89,7 +89,7 @@ export const AddAnimalAlert = () => {
         })
 
     };
-
+    
 
     return (
         <div className='container'>
