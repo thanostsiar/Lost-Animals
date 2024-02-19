@@ -3,6 +3,7 @@ package com.lostanimals.lostanimalsbackend.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "ANIMAL_ALERT")
@@ -20,9 +21,6 @@ public class AnimalAlert {
 
     @Column(name = "PICTURE_URL", nullable = false)
     private String picture_url;
-
-    @Column(name = "CHIP_NUMBER", nullable = true)
-    private String chip_number;
 
     @Column(name = "LAST_LOCATION", nullable = true)
     private String last_location;
@@ -72,14 +70,6 @@ public class AnimalAlert {
         this.picture_url = picture_url;
     }
 
-    public String getChip_number() {
-        return chip_number;
-    }
-
-    public void setChip_number(String chip_number) {
-        this.chip_number = chip_number;
-    }
-
     public String getLast_location() {
         return last_location;
     }
@@ -111,7 +101,6 @@ public class AnimalAlert {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", picture_url='" + picture_url + '\'' +
-                ", chip_number='" + chip_number + '\'' +
                 ", last_location='" + last_location + '\'' +
                 ", user=" + user +
                 ", animal=" + animal +

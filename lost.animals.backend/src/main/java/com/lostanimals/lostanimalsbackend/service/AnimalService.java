@@ -18,4 +18,9 @@ public class AnimalService {
         return animalRepository.findById(animalId)
                 .orElseThrow(() -> new EntityNotFoundException("Animal not found with id: " + animalId));
     }
+
+    public Animal getAnimalByChipNumber(String chipNumber) {
+        return animalRepository.findByChipNumber(chipNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Animal not found with chip number: " + chipNumber));
+    }
 }
