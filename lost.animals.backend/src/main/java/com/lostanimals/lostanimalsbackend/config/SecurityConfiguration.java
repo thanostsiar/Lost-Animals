@@ -37,7 +37,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -49,10 +49,13 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/ws/**", configuration);
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
@@ -65,10 +68,13 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/api/auth/**").permitAll();
-                auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/createAlert").hasAnyRole("ADMIN", "USER");
+                auth.requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "USER");
+                //auth.requestMatchers("/ws/**").hasAnyRole("ADMIN", "USER");
+                auth.requestMatchers("/ws/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/search/**").permitAll();
                 auth.requestMatchers(HttpMethod.DELETE, "api/animal-alerts/**").hasRole("ADMIN");
+                auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                 auth.anyRequest().authenticated();
             }).httpBasic(Customizer.withDefaults());
 
