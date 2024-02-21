@@ -43,6 +43,12 @@ export const Navbar = () => {
               <NavLink className='nav-link' to='/createAlert'>Create Alert</NavLink>
             </li>
             }
+            {
+              isAuthenticated && 
+              <li className='nav-item'>
+              <NavLink className='nav-link' to='/chat'>Chat</NavLink>
+            </li>
+            }
             
           </ul>
           <ul className='navbar-nav ms-auto'>

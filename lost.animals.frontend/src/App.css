@@ -32,31 +32,31 @@
 }
 
 .main-color {
-  background-color: #12330f; /* Bootstrap dark background color */
-  border-color: #12330f; /* Bootstrap dark border color */
+  background-color: #41605E; /* Bootstrap dark background color */
+  border-color: #41605E; /* Bootstrap dark border color */
   color: #ffffff; /* White text color */
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .main-color:hover {
-  background-color: #12330f; /* Slightly darker color on hover */
-  border-color: #0c220a; /* Slightly darker border color on hover */
+  background-color: #41605E; /* Slightly darker color on hover */
+  border-color: #123836; /* Slightly darker border color on hover */
 }
 
 .secondary-color {
   background-color: #ffffff;
-  border-color: #12330f;
-  color: #12330f;
+  border-color: #41605E;
+  color: #41605E;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .secondary-color:hover {
-  background-color: #12330f;
+  background-color: #41605E;
   border-color: #ffffff;
 }
 
 .navbar {
-  background-color: #12330f; 
+  background-color: #41605E; 
   padding: 15px 0;
 }
 
