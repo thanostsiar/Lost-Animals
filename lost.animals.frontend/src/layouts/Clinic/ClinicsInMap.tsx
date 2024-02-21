@@ -20,15 +20,31 @@ const ClinicsInMap: React.FC = () => {
 
     useEffect(() => {
         if (userLocation && mapRef.current && !map.current) {
-            map.current = new google.maps.Map(mapRef.current, {
+            const mapOptions: google.maps.MapOptions = {
                 center: userLocation,
-                zoom: 12,
-            });
+                zoom: calculateZoomLevel(),
+            };
+
+            map.current = new google.maps.Map(mapRef.current, mapOptions);
 
             placesService.current = new google.maps.places.PlacesService(map.current);
             searchNearbyAnimalClinics();
         }
     }, [userLocation]);
+
+    const calculateZoomLevel = () => {
+        if (!mapRef.current || !userLocation) return 12; // Default zoom level
+
+        const containerWidth = mapRef.current.offsetWidth;
+        const containerHeight = mapRef.current.offsetHeight;
+
+        // Adjust zoom level based on container dimensions
+        const zoomWidth = Math.log2(360 * containerWidth / 256 / 2 / 256);
+        const zoomHeight = Math.log2(180 * containerHeight / 256 / 2 / 256);
+        const zoomLevel = Math.min(zoomWidth, zoomHeight);
+        const adjustedZoomLevel = zoomLevel + 1;
+        return Math.max(adjustedZoomLevel, 12);
+    };
 
     const searchNearbyAnimalClinics = () => {
         if (!placesService.current || !userLocation) return;
@@ -77,7 +93,7 @@ const ClinicsInMap: React.FC = () => {
         });
     };
 
-    return <div ref={mapRef} style={{ width: '100%', height: '500px' }} />;
+    return <div ref={mapRef} style={{ width: '100%', height: '80vh' }} />;
 };
 
 export default ClinicsInMap; 

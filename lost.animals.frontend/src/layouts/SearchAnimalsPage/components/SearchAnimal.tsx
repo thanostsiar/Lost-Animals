@@ -22,10 +22,17 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
     React.useEffect(() => {
         if (deleted) {
             getAllAlerts();
-            navigate("/");
             setDeleted(false);
+            window.location.reload();
         }
     }, [deleted]);
+
+    const handleDeleteConfirmation = (id: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this alert?");
+        if (confirmDelete) {
+            removeAlert(id);
+        }
+    };
     
 
     return (
@@ -80,7 +87,7 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                 {
                     isAdmin && 
                     <div className='col-md-4 d-flex justify-content-center align-items-center'>
-                    <button className='btn btn-danger' onClick={() => removeAlert(props.animalAlert.id)}>
+                    <button className='btn btn-danger' onClick={() => handleDeleteConfirmation(props.animalAlert.id)}>
                         Delete
                     </button>
                 </div>

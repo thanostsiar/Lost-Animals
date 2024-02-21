@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { registerAPICall } from "../../Auth/AuthService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserRegistration = () => {
 
@@ -19,6 +19,7 @@ const UserRegistration = () => {
         number: false,
         specialChar: false
     });
+    const navigator = useNavigate();
 
     const validatePassword = (value) => {
         const validations = {
@@ -76,19 +77,19 @@ const UserRegistration = () => {
             return;
         }
 
-        const register = {name, surname, email, password};
+        const register = { name, surname, email, password };
 
         console.log(register);
 
         registerAPICall(register)
-        .then((response) => {
-            console.log(response.data);
-        }).catch(error => {
-            console.error('Error during API call:', error);
-        })
+            .then((response) => {
+                console.log(response.data);
+                navigator('/login');
+            }).catch(error => {
+                console.error('Error during API call:', error);
+            })
 
-        navigator('/');
-    } 
+    }
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -100,92 +101,92 @@ const UserRegistration = () => {
 
     return (
         <div className="container">
-            <div className="mt-5">
-                <div className="row">
-                    <div className="col-md-6 offset-md-3">
-                        <div className="card">
-                            <div className="card-header">
-                                <h2 className="text-center">User Registration</h2>
-                            </div>
-                            <div className="card-body">
-                                <form>
-                                    <div className="row mb-3">
-                                        <label className="col-md-3 control-label">Name</label>
-                                        <div className="col-md-9 input-group">
-                                            <input type="text" name="name" className="form-control" value={name} onChange={ (e) => setName(e.target.value) }></input>
+            <br></br>
+            <div className="row">
+                <div className="col-md-6 offset-md-3">
+                    <div className="card">
+                        <div className="card-header">
+                            <h2 className="text-center">User Registration</h2>
+                        </div>
+                        <div className="card-body">
+                            <form>
+                                <div className="row mb-3">
+                                    <label className="col-md-3 control-label">Name</label>
+                                    <div className="col-md-9 input-group">
+                                        <input type="text" name="name" className="form-control" value={name} onChange={(e) => setName(e.target.value)}></input>
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <label className="col-md-3 control-label">Surname</label>
+                                    <div className="col-md-9 input-group">
+                                        <input type="text" name="surname" className="form-control" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <label className="col-md-3 control-label">Email</label>
+                                    <div className="col-md-9 input-group">
+                                        <input type="text" name="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <label className="col-md-3 control-label">Password</label>
+                                    <div className="col-md-9 input-group">
+                                        <input type={showPassword ? 'text' : 'password'} name="password" className="form-control" value={password} onChange={(e) => handlePasswordChange(e.target.value)}></input>
+                                        <div className="input-group-append">
+                                            <button type="button" onClick={toggleShowPassword} className="btn btn-outline-secondary">{showPassword ? 'Hide' : 'Show'}</button>
                                         </div>
                                     </div>
-                                    <div className="row mb-3">
-                                        <label className="col-md-3 control-label">Surname</label>
-                                        <div className="col-md-9 input-group">
-                                            <input type="text" name="surname" className="form-control" value={surname} onChange={ (e) => setSurname(e.target.value) }></input>
+                                </div>
+                                <div className="row mb-3">
+                                    <label className="col-md-3 control-label">Confirm Password</label>
+                                    <div className="col-md-9 input-group">
+                                        <input type={showConfirmPassword ? 'text' : 'password'} name="confirmPassword" className="form-control" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></input>
+                                        <div className="input-group-append">
+                                            <button type="button" onClick={toggleShowConfirmPassword} className="btn btn-outline-secondary">{showConfirmPassword ? 'Hide' : 'Show'}</button>
                                         </div>
                                     </div>
-                                    <div className="row mb-3">
-                                        <label className="col-md-3 control-label">Email</label>
-                                        <div className="col-md-9 input-group">
-                                            <input type="text" name="email" className="form-control" value={email} onChange={ (e) => setEmail(e.target.value) }></input>
-                                        </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-md-3"></div>
+                                    <div className="col-md-9 input-group">
+                                        <ul>
+                                            <li className={passwordValidations.length ? 'text-success' : 'text-danger'}>
+                                                At least 6 characters long
+                                            </li>
+                                            <li className={passwordValidations.uppercase ? 'text-success' : 'text-danger'}>
+                                                At least one uppercase letter
+                                            </li>
+                                            <li className={passwordValidations.lowercase ? 'text-success' : 'text-danger'}>
+                                                At least one lowercase letter
+                                            </li>
+                                            <li className={passwordValidations.number ? 'text-success' : 'text-danger'}>
+                                                At least one number
+                                            </li>
+                                            <li className={passwordValidations.specialChar ? 'text-success' : 'text-danger'}>
+                                                At least one special character
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div className="row mb-3">
-                                        <label className="col-md-3 control-label">Password</label>
-                                        <div className="col-md-9 input-group">
-                                            <input type={showPassword ? 'text' : 'password'} name="password" className="form-control" value={password} onChange={ (e) => handlePasswordChange(e.target.value) }></input>
-                                            <div className="input-group-append">
-                                                <button type="button" onClick={toggleShowPassword} className="btn btn-outline-secondary">{showPassword ? 'Hide' : 'Show'}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <label className="col-md-3 control-label">Confirm Password</label>
-                                        <div className="col-md-9 input-group">
-                                            <input type={showConfirmPassword ? 'text' : 'password'} name="confirmPassword" className="form-control" value={confirmPassword} onChange={ (e) => setConfirmPassword(e.target.value) }></input>
-                                            <div className="input-group-append">
-                                                <button type="button" onClick={toggleShowConfirmPassword} className="btn btn-outline-secondary">{showConfirmPassword ? 'Hide' : 'Show'}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <div className="col-md-3"></div>
-                                        <div className="col-md-9 input-group">
-                                            <ul>
-                                                <li className={passwordValidations.length ? 'text-success' : 'text-danger'}>
-                                                    At least 6 characters long
-                                                </li>
-                                                <li className={passwordValidations.uppercase ? 'text-success' : 'text-danger'}>
-                                                    At least one uppercase letter
-                                                </li>
-                                                <li className={passwordValidations.lowercase ? 'text-success' : 'text-danger'}>
-                                                    At least one lowercase letter
-                                                </li>
-                                                <li className={passwordValidations.number ? 'text-success' : 'text-danger'}>
-                                                    At least one number
-                                                </li>
-                                                <li className={passwordValidations.specialChar ? 'text-success' : 'text-danger'}>
-                                                    At least one special character
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                </div>
 
-                                    {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                                    
-                                    <div className="form-group mb-9">
-                                        <button className="btn btn-outline-dark" onClick={ (e) => registerUser(e) }>Submit</button>
-                                    </div>
+                                {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-                                    <div className="text-center">
-                                        <p>Already have an account? <Link type="text" style={{color: '#12330f'}} to="/login">Login</Link></p>
-                                    </div>
-                                </form>
-                            </div>
+                                <div className="form-group mb-9">
+                                    <button className="btn main-color" onClick={(e) => registerUser(e)}>Submit</button>
+                                </div>
+
+                                <div className="text-center">
+                                    <p>Already have an account? <Link type="text" style={{ color: '#12330f' }} to="/login">Login</Link></p>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <br></br>
         </div>
     );
 
-}
+};
 
 export default UserRegistration;
