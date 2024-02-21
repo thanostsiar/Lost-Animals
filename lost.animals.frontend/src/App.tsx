@@ -10,15 +10,17 @@ import UserRegistration from './layouts/User/UserRegistration';
 import UserLogin from './layouts/User/UserLogin';
 import { isUserLoggedIn } from './Auth/AuthService';
 import ClinicsInMap from './layouts/Clinic/ClinicsInMap';
+import ChatRoom from './layouts/Chat/chat';
+import Chat from './layouts/Chat/chat';
 
 
 export const App = () => {
 
-  function AuthenticatedRoute({children}){
+  function AuthenticatedRoute({ children }) {
 
     const isAuth = isUserLoggedIn();
 
-    if(isAuth) {
+    if (isAuth) {
       return children;
     }
 
@@ -36,14 +38,19 @@ export const App = () => {
             <Route path='/' element={<Navigate to='/home' replace />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/register' element={<UserRegistration />} />
+            <Route path='/login' element={<UserLogin />} />
             <Route path='/search' element={<SearchAnimalsPage />} />
             <Route path='/clinics' element={<ClinicsInMap />} />
+            <Route path='/chat' element={
+              <AuthenticatedRoute>
+                <Chat />
+              </AuthenticatedRoute>
+            } ></Route>
             <Route path='/createAlert' element={
               <AuthenticatedRoute>
                 <CreateAlertPage />
               </AuthenticatedRoute>
             }></Route>
-            <Route path='/login' element={<UserLogin />} />
           </Routes>
         </div>
         <Footer />

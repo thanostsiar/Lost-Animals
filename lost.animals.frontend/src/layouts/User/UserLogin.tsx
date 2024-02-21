@@ -109,7 +109,7 @@ const UserLogin = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default UserLogin;
