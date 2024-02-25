@@ -26,7 +26,7 @@ public class Animal {
     @Column(name = "COLOR", nullable = false)
     private String color;
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<AnimalAlert> animalAlertSet = new HashSet<>();
 

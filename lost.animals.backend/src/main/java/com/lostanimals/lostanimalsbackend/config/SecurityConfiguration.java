@@ -9,7 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -70,11 +73,11 @@ public class SecurityConfiguration {
                 auth.requestMatchers("/api/auth/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/createAlert").hasAnyRole("ADMIN", "USER");
                 auth.requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "USER");
-                //auth.requestMatchers("/ws/**").hasAnyRole("ADMIN", "USER");
                 auth.requestMatchers("/ws/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/search/**").permitAll();
                 auth.requestMatchers(HttpMethod.DELETE, "api/animal-alerts/**").hasRole("ADMIN");
                 auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                auth.requestMatchers("/images/**", "/js/**", "/css/**", "/webjars/**").permitAll();
                 auth.anyRequest().authenticated();
             }).httpBasic(Customizer.withDefaults());
 
