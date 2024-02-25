@@ -5,9 +5,9 @@ export const ReturnAnimal: React.FC<{animalAlert: AnimalAlertModel}> = (props) =
     return (
         <div className='col-xs-6 col-sm-6 col-md-4 col-lg-3 mb-3'>
             <div className='text-center'>
-                {props.animalAlert.picture_url ? 
+                {props.animalAlert.imagePath ? 
                     <img
-                        src={props.animalAlert.picture_url}
+                        src={props.animalAlert.imagePath}
                         width='233'
                         height='233'
                         alt="animal"

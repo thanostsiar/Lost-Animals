@@ -4,12 +4,24 @@ import { saveAlert } from '../../../Auth/AnimalAlertService';
 import { getLoggedInUser, isAdminUser } from '../../../Auth/AuthService';
 import Compressor from 'image-compressor';
 
+interface AlertData {
+    title: string;
+    description: string;
+    imageFile: File | null; // Define the type of imageFile
+    chipNumber: string;
+    lastLocation: string;
+    name: string;
+    species: string;
+    color: string;
+    userEmail: string;
+}
+
 export const AddAnimalAlert = () => {
 
-    const [alertData, setAlertData] = useState({
+    const [alertData, setAlertData] = useState<AlertData>({
         title: '',
         description: '',
-        image: '',
+        imageFile: null,
         chipNumber: '',
         lastLocation: '',
         name: '',
@@ -42,46 +54,73 @@ export const AddAnimalAlert = () => {
         setAlertData({ ...alertData, [e.target.name]: e.target.value });
     };
 
-    const handleImage = async (e) => {
-
-        const file = e.target.files[0];
-        if (!file) return;
-
-        try {
-            const compressedFile = await new Compressor(file, {
-                quality: 0.6, // Adjust quality as needed (0.6 is just an example)
-                maxWidth: 800, // Maximum width of the resized image
-                maxHeight: 800, // Maximum height of the resized image
-                mimeType: 'image/jpeg' // Output image format
-            });
-
-            const reader = new FileReader();
-            reader.readAsDataURL(compressedFile);
-            reader.onload = () => {
-                const result = reader.result;
-                setAlertData(prevState => ({ ...prevState, image: result as string }));
-            };
-        } catch (error) {
-            console.error('Error compressing image:', error);
+    const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setAlertData({ ...alertData, imageFile: e.target.files[0] });
         }
-        
-        // const reader = new FileReader();
-        // reader.readAsDataURL(e.target.files[0]);
-        // reader.onload = () => {
-        //     //console.log(reader.result);
-        //     const result = reader.result;
-        //     setAlertData(prevState => ({ ...prevState, [e.target.name]: result }));
-        // };
-        // reader.onerror = error => {
-        //     console.log("Error: ", error);
-        // };
-    };
 
+        // if (e.target.files && e.target.files[0]) {
+        //     const file = e.target.files[0];
+        //     try {
+        //         const compressedFile = await new Compressor(file, {
+        //             quality: 0.6, // Adjust quality as needed (0.6 is just an example)
+        //             maxWidth: 800, // Maximum width of the resized image
+        //             maxHeight: 800, // Maximum height of the resized image
+        //             mimeType: 'image/jpeg' // Output image format
+        //         });
+        //         const reader = new FileReader();
+        //         reader.readAsDataURL(compressedFile);
+        //         reader.onload = () => {
+        //             const result = reader.result as string;
+        //             setAlertData({ ...alertData, imageFile: result });
+        //         };
+        //     } catch (error) {
+        //         console.error('Error compressing image:', error);
+        //     }
+        // }
+
+        // if (e.target.files && e.target.files[0]) {
+        //     const file = e.target.files[0];
+        //     const reader = new FileReader();
+        //     reader.onload = () => {
+        //         const base64Data = reader.result?.toString();
+        //         if (base64Data) {
+        //             setAlertData({ ...alertData, imageFile: base64Data });
+        //         }
+        //     };
+        //     reader.readAsDataURL(file);
+        // }
+    };
 
     const saveNewAlert = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        saveAlert(alertData).then((response) => {
+        const formData = new FormData();
+        // formData.append('title', alertData.title);
+        // formData.append('description', alertData.description);
+        // if (alertData.imageFile) {
+        //     formData.append('imageFile', alertData.imageFile);
+        // }
+        // formData.append('chipNumber', alertData.chipNumber);
+        // formData.append('lastLocation', alertData.lastLocation);
+        // formData.append('name', alertData.name);
+        // formData.append('species', alertData.species);
+        // formData.append('color', alertData.color);
+        // formData.append('userEmail', alertData.userEmail);
+        const json = JSON.stringify(alertData);
+        //formData.append('alert', json);
+        const blob = new Blob([json], {
+            type: 'application/json'
+          });
+        formData.append('alert', blob);
+        if (alertData.imageFile) {
+            formData.append('imageFile', alertData.imageFile);
+        }
+
+        console.log(formData.get('alert'));
+        console.log(formData.get('imageFile'));
+
+        saveAlert(formData).then((response) => {
             console.log(response.data)
             navigate('/')
         }).catch(error => {
@@ -127,7 +166,7 @@ export const AddAnimalAlert = () => {
                                 <input
                                     type='file'
                                     className='form-control'
-                                    name='image'
+                                    name='imageFile'
                                     accept='image/*'
                                     onChange={handleImage}
                                 >

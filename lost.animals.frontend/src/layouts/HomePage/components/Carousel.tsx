@@ -32,7 +32,7 @@ export const Carousel = () => {
                     id: responseJson[key].id,
                     title: responseJson[key].title,
                     description: responseJson[key].description,
-                    picture_url: responseJson[key].picture_url,
+                    imagePath: responseJson[key].imagePath,
                     last_location: responseJson[key].last_location,
                     animal: responseJson[key].animal
                 });
@@ -61,10 +61,29 @@ export const Carousel = () => {
         )
     }
 
+    const createCarouselItems = () => {
+        const carouselItems: JSX.Element[] = [];
+        const chunkSize = 3;
+        for (let i = 0; i < animalAlerts.length; i += chunkSize) {
+            const chunk = animalAlerts.slice(i, i + chunkSize);
+            carouselItems.push(
+                <div className='carousel-item' key={`carousel-item-${i}`}>
+                    <div className='row d-flex justify-content-center align-items-center'>
+                        {chunk.map(animalAlert => (
+                            <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+        return carouselItems;
+    };
+
+
     return (
         <div className='container mt-5' style={{ height: 550 }}>
             <div className='homepage-carousel-title'>
-                <h3>Lost animals alerts.</h3>
+                <h3>Lost animals alerts</h3>
             </div>
             <div id='carouselExampleControls' className='carousel carousel-dark slide mt-5
                 d-none d-lg-block' data-bs-interval='false'>
@@ -72,30 +91,24 @@ export const Carousel = () => {
                 {/* Desktop */}
 
                 <div className='carousel-inner'>
-                    <div className='carousel-item active'>
-                        <div className='row d-flex justify-content-center align-items-center'>
-                            {animalAlerts.slice(0, 3).map(animalAlert => (
-                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
-                            ))}
-                        </div>
-                    </div>
-                    <div className='carousel-item'>
-                        <div className='row d-flex justify-content-center align-items-center'>
-                            {animalAlerts.slice(3, 6).map(animalAlert => (
-                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
-                            ))}
-                        </div>
-                    </div>
-                    <div className='carousel-item'>
-                        <div className='row d-flex justify-content-center align-items-center'>
-                            {animalAlerts.slice(6, 9).map(animalAlert => (
-                                <ReturnAnimal animalAlert={animalAlert} key={animalAlert.id} />
-                            ))}
-                        </div>
-                    </div>
-                    <div className='homepage-carousel-title mt-3'>
-                        <Link className='btn btn-outline-secondary btn-lg' to='/search'>View More</Link>
-                    </div>
+                    {
+                        animalAlerts.length > 0 ? (
+                            <>
+                                {animalAlerts.map((animalAlert, index) => (
+                                    <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={animalAlert.id}>
+                                        <div className='row d-flex justify-content-center align-items-center'>
+                                            <ReturnAnimal animalAlert={animalAlert} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div className='homepage-carousel-title mt-3'>
+                                <p>No animal alerts available</p>
+                            </div>
+                        )
+                    }
+
                 </div>
                 <button className='carousel-control-prev' type='button'
                     data-bs-target='#carouselExampleControls' data-bs-slide='prev'>
@@ -111,11 +124,15 @@ export const Carousel = () => {
 
             {/* Mobile */}
 
-            <div className='d-lg-none mt-3'>
-                <div className='row d-flex justify-content-center align-items-center'>
-                    <ReturnAnimal animalAlert={animalAlerts[0]} key={animalAlerts[0].id} />
+            {animalAlerts.length > 0 && (
+
+                <div className='d-lg-none mt-3'>
+                    <div className='row d-flex justify-content-center align-items-center'>
+                        <ReturnAnimal animalAlert={animalAlerts[0]} key={animalAlerts[0].id} />
+                    </div>
                 </div>
-            </div>
+            )
+            }
             <div className='homepage-carousel-title mt-3'>
                 <Link className='btn btn-outline-secondary btn-lg' to='/search'>View More</Link>
             </div>
