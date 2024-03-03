@@ -2,15 +2,15 @@ class AnimalAlertModel {
     id: number;
     title: string;
     description?: string;
-    picture_url: string;
+    imagePath: string;
     last_location?: string;
     animal: Animal;
 
-    constructor (animal: Animal, id: number, title: string, description: string, picture_url: string, last_location?: string) {
+    constructor (animal: Animal, id: number, title: string, description: string, imagePath: string, last_location?: string) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.picture_url = picture_url;
+        this.imagePath = imagePath;
         this.last_location = last_location;
         this.animal = animal;
     }

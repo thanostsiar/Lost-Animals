@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { saveAlert } from '../../../Auth/AnimalAlertService';
-import { getLoggedInUser, isAdminUser } from '../../../Auth/AuthService';
-import Compressor from 'image-compressor';
+import { getLoggedInUser, getToken, isAdminUser } from '../../../Auth/AuthService';
+
+interface AlertData {
+    title: string;
+    description: string;
+    imagePath: File | null; 
+    chipNumber: string;
+    lastLocation: string;
+    name: string;
+    species: string;
+    color: string;
+    userEmail: string;
+}
 
 export const AddAnimalAlert = () => {
 
-    const [alertData, setAlertData] = useState({
+    const [alertData, setAlertData] = useState<AlertData>({
         title: '',
         description: '',
-        image: '',
+        imagePath: null,
         chipNumber: '',
         lastLocation: '',
         name: '',
@@ -25,7 +36,6 @@ export const AddAnimalAlert = () => {
         const email = getLoggedInUser();
         if (email) {
             setAlertData(prevState => ({ ...prevState, userEmail: email }));
-            console.log(email)
         }
     }, []);
 
@@ -42,46 +52,28 @@ export const AddAnimalAlert = () => {
         setAlertData({ ...alertData, [e.target.name]: e.target.value });
     };
 
-    const handleImage = async (e) => {
-
-        const file = e.target.files[0];
-        if (!file) return;
-
-        try {
-            const compressedFile = await new Compressor(file, {
-                quality: 0.6, // Adjust quality as needed (0.6 is just an example)
-                maxWidth: 800, // Maximum width of the resized image
-                maxHeight: 800, // Maximum height of the resized image
-                mimeType: 'image/jpeg' // Output image format
-            });
-
-            const reader = new FileReader();
-            reader.readAsDataURL(compressedFile);
-            reader.onload = () => {
-                const result = reader.result;
-                setAlertData(prevState => ({ ...prevState, image: result as string }));
-            };
-        } catch (error) {
-            console.error('Error compressing image:', error);
+    const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setAlertData({ ...alertData, imagePath: e.target.files[0] });
         }
-        
-        // const reader = new FileReader();
-        // reader.readAsDataURL(e.target.files[0]);
-        // reader.onload = () => {
-        //     //console.log(reader.result);
-        //     const result = reader.result;
-        //     setAlertData(prevState => ({ ...prevState, [e.target.name]: result }));
-        // };
-        // reader.onerror = error => {
-        //     console.log("Error: ", error);
-        // };
     };
 
 
     const saveNewAlert = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        saveAlert(alertData).then((response) => {
+        const formData = new FormData();
+        const json = JSON.stringify(alertData);
+        const blob = new Blob([json], {
+            type: 'application/json'
+          });
+        formData.append('alert', blob);
+        if (alertData.imagePath) {
+            formData.append('imagePath', alertData.imagePath);
+        }
+
+
+        saveAlert(formData).then((response) => {
             console.log(response.data)
             navigate('/')
         }).catch(error => {
@@ -105,7 +97,7 @@ export const AddAnimalAlert = () => {
                                     type='text'
                                     className='form-control'
                                     name='title'
-                                    value={alertData.title}
+                                     value={alertData.title}
                                     onChange={handleChangeElement}
                                 >
                                 </input>
@@ -127,7 +119,7 @@ export const AddAnimalAlert = () => {
                                 <input
                                     type='file'
                                     className='form-control'
-                                    name='image'
+                                    name='imageFile'
                                     accept='image/*'
                                     onChange={handleImage}
                                 >
@@ -196,11 +188,10 @@ export const AddAnimalAlert = () => {
 
                             <button className='btn main-color'>Submit</button>
                         </form>
-
                     </div>
                 </div>
-
             </div>
+            <br></br>
         </div>
     );
 };

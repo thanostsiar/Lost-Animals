@@ -18,6 +18,9 @@ public interface AnimalAlertRepository extends JpaRepository<AnimalAlert, Long> 
 
     List<AnimalAlert> findAnimalAlertByAnimalSpecies(String species);
 
+    @Query("SELECT a FROM AnimalAlert a WHERE LOWER(a.animal.species) NOT IN ('dog', 'cat')")
+    List<AnimalAlert> findOtherAnimalAlerts();
+
     @Transactional
     @Modifying
     @Query("delete from AnimalAlert a where a.id = :id")

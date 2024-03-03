@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import AnimalAlertModel from '../../models/AnimalAlertModel';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { SearchAnimal } from './components/SearchAnimal';
-import { Pagination } from '../Utils/Pagination';
 
 export const SearchAnimalsPage = () => {
 
@@ -12,7 +11,6 @@ export const SearchAnimalsPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [animalsPerPage] = useState(5);
     const [totalAmountOfAnimals, setTotalAmountOfAnimals] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [searchUrl, setSearchUrl] = useState('');
     const [speciesSelection, setSpeciesSelection] = useState('Animal Species');
@@ -38,13 +36,9 @@ export const SearchAnimalsPage = () => {
 
             const responseJson = await response.json();
 
-            setTotalAmountOfAnimals(responseJson.length);
+            console.log(responseJson);
 
-            // if (responseJson.length % 5 === 0) {
-            //     setTotalPages(Math.floor(responseJson.length / 5));
-            // } else {
-            //     setTotalPages(Math.floor(responseJson.length / 5) + 1);
-            // }
+            setTotalAmountOfAnimals(responseJson.length);
 
             const loadedAlerts: AnimalAlertModel[] = [];
 
@@ -53,13 +47,14 @@ export const SearchAnimalsPage = () => {
                     id: responseJson[key].id,
                     title: responseJson[key].title,
                     description: responseJson[key].description,
-                    picture_url: responseJson[key].picture_url,
+                    imagePath: responseJson[key].imagePath,
                     last_location: responseJson[key].last_location,
                     animal: responseJson[key].animal
                 });
             }
 
             setAnimals(loadedAlerts);
+            console.log(loadedAlerts);
             setIsLoading(false);
         };
         fetchAlerts().catch((error: any) => {
@@ -95,8 +90,7 @@ export const SearchAnimalsPage = () => {
         if (
             value.toLowerCase() === 'dog' || 
             value.toLowerCase() === 'cat' || 
-            value.toLowerCase() === 'bird' || 
-            value.toLowerCase() === 'fish'
+            value.toLowerCase() === 'other' 
         ) {
             setSpeciesSelection(value);
             setSearchUrl(`/findBySpecies?species=${value}`);
@@ -110,8 +104,6 @@ export const SearchAnimalsPage = () => {
     const indexOfFirstAnimal: number = indexOfLastAnimal - animalsPerPage;
     let lastItem = animalsPerPage * currentPage <= totalAmountOfAnimals ?
                                           animalsPerPage * currentPage : totalAmountOfAnimals;
-
-    //const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div>
@@ -152,14 +144,9 @@ export const SearchAnimalsPage = () => {
                                             Cat
                                         </a>
                                     </li>
-                                    <li onClick={() => speciesField('Bird')}>
+                                    <li onClick={() => speciesField('Other')}>
                                         <a className='dropdown-item' href='#'>
-                                            Bird
-                                        </a>
-                                    </li>
-                                    <li onClick={() => speciesField('Fish')}>
-                                        <a className='dropdown-item' href='#'>
-                                            Fish
+                                            Other
                                         </a>
                                     </li>
                                 </ul>
@@ -171,9 +158,6 @@ export const SearchAnimalsPage = () => {
                             <div className='mt-3'>
                                 <h5>Number of results: ({totalAmountOfAnimals})</h5>
                             </div>
-                            <p>
-                                {indexOfFirstAnimal + 1} to {lastItem} of {totalAmountOfAnimals} items:
-                            </p>
                             {animals.map(animal => (
                                 <SearchAnimal animalAlert={animal} key={animal.id} />
                             ))}
@@ -181,15 +165,10 @@ export const SearchAnimalsPage = () => {
                         :
                         <div className='m-5'>
                             <h3>
-                                Can't find what you are looking for?
+                                No alerts available...
                             </h3>
-                            <a type='button' className='btn main-color btn-md px-4 me-md-2 fw-bold text-white'
-                                href='#'>Support</a>
                         </div>
                     }
-                    {/* {totalPages > 1 &&
-                        <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
-                    } */}
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(LostAnimalsApiException.class)
-    public ResponseEntity<ErrorDetails> handleTodoAPIException(LostAnimalsApiException exception,
+    public ResponseEntity<ErrorDetails> handleAnimalAlertsAPIException(LostAnimalsApiException exception,
                                                                WebRequest webRequest){
 
         ErrorDetails errorDetails = new ErrorDetails(

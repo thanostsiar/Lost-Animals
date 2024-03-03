@@ -103,6 +103,7 @@ public class User {
         this.animalAlerts = animalAlerts;
     }
 
+
     @Override
     public String toString() {
         return "User{" +

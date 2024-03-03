@@ -16,13 +16,13 @@ public class AnimalAlert {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-    @Column(name = "DESCRIPTION", nullable = true)
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "PICTURE_URL", nullable = false)
-    private String picture_url;
+    @Column(name = "IMAGE_PATH")
+    private String imagePath;
 
-    @Column(name = "LAST_LOCATION", nullable = true)
+    @Column(name = "LAST_LOCATION")
     private String last_location;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -62,12 +62,12 @@ public class AnimalAlert {
         this.description = description;
     }
 
-    public String getPicture_url() {
-        return picture_url;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setPicture_url(String picture_url) {
-        this.picture_url = picture_url;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getLast_location() {
@@ -100,7 +100,7 @@ public class AnimalAlert {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", picture_url='" + picture_url + '\'' +
+                ", imagePath='" + imagePath + '\'' +
                 ", last_location='" + last_location + '\'' +
                 ", user=" + user +
                 ", animal=" + animal +

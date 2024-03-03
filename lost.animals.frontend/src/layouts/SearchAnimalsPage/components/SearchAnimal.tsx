@@ -40,14 +40,14 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
             <div className='row g-0'>
                 <div className='col-md-2'>
                     <div className='d-none d-lg-block'>
-                        {props.animalAlert.picture_url ?
-                            <img src={props.animalAlert.picture_url}
+                        {props.animalAlert.imagePath ?
+                            <img src={props.animalAlert.imagePath}
                                 width='200'
                                 height='200'
                                 alt='Animal'
                             />
                             :
-                            <img src={require('../../../Images/4_cats.jpg')}
+                            <img src={require('../../../Images/cat_on_leg.jpg')}
                                 width='200'
                                 height='200'
                                 alt='Animal'
@@ -56,14 +56,14 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                     </div>
                     <div className='d-lg-none d-flex justify-content-center 
                         align-items-center'>
-                        {props.animalAlert.picture_url ?
-                            <img src={props.animalAlert.picture_url}
+                        {props.animalAlert.imagePath ?
+                            <img src={props.animalAlert.imagePath}
                                 width='200'
                                 height='200'
                                 alt='Animal'
                             />
                             :
-                            <img src={require('../../../Images/4_cats.jpg')}
+                            <img src={require('../../../Images/cat_on_leg.jpg')}
                                 width='200'
                                 height='200'
                                 alt='Animal'

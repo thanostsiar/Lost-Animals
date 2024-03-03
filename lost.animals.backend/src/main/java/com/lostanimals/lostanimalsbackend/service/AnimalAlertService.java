@@ -9,9 +9,11 @@ import com.lostanimals.lostanimalsbackend.repository.AnimalAlertRepository;
 import com.lostanimals.lostanimalsbackend.repository.AnimalRepository;
 import com.lostanimals.lostanimalsbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,16 +24,18 @@ public class AnimalAlertService {
     private final UserRepository userRepository;
     private final AnimalRepository animalRepository;
     private final AnimalService animalService;
+    private final ImageService imageService;
 
     @Autowired
-    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, AnimalService animalService) {
+    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, AnimalService animalService, ImageService imageService) {
         this.animalAlertRepository = animalAlertRepository;
         this.userRepository = userRepository;
         this.animalRepository = animalRepository;
         this.animalService = animalService;
+        this.imageService = imageService;
     }
 
-    public AnimalAlert createAlert(AnimalAlertDTO animalAlertDTO) {
+    public AnimalAlert createAlert(AnimalAlertDTO animalAlertDTO, MultipartFile imagePath) throws IOException {
         User user = userRepository.findByEmail(animalAlertDTO.getUserEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -46,14 +50,18 @@ public class AnimalAlertService {
             animal.setName(animalAlertDTO.getName());
             animal.setSpecies(animalAlertDTO.getSpecies());
             animal.setColor(animalAlertDTO.getColor());
-            // Save the new animal
+
             animal = animalRepository.save(animal);
         }
+        String fileName = imageService.generateUniqueFileName();
+        imageService.saveImageToFileSystem(imagePath, fileName);
+        String staticContentPath = imageService.constructStaticContentPath(fileName);
+
 
         AnimalAlert animalAlert = new AnimalAlert();
         animalAlert.setTitle(animalAlertDTO.getTitle());
         animalAlert.setDescription(animalAlertDTO.getDescription());
-        animalAlert.setPicture_url(animalAlertDTO.getImage());
+        animalAlert.setImagePath(staticContentPath);
         animalAlert.setLast_location(animalAlertDTO.getLastLocation());
         animalAlert.setAnimal(animal);
         animalAlert.setUser(user);
@@ -74,11 +82,15 @@ public class AnimalAlertService {
         return animalAlertRepository.findAll();
     }
 
-    public List<AnimalAlert> findAnimalAlertByTitle (String title) {
+    public List<AnimalAlert> findAnimalAlertByTitle(String title) {
         return animalAlertRepository.findAnimalAlertByTitle(title);
     }
 
-    public List<AnimalAlert> findAnimalAlertByAnimalSpecies (String species) {
-        return animalAlertRepository.findAnimalAlertByAnimalSpecies(species);
+    public List<AnimalAlert> findAnimalAlertByAnimalSpecies(String species) {
+        if (species.equalsIgnoreCase("dog") || species.equalsIgnoreCase("cat")) {
+            return animalAlertRepository.findAnimalAlertByAnimalSpecies(species);
+        } else {
+            return animalAlertRepository.findOtherAnimalAlerts();
+        }
     }
 }

@@ -17,7 +17,11 @@ axios.interceptors.request.use(function (config) {
   
 export const getAllAlerts = () => axios.get(base_url + '/search');
 
-export const saveAlert = (alert) => axios.post(base_url + '/createAlert', alert);
+export const saveAlert = (alert) => axios.post(base_url + '/createAlert', alert, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+}
+});
 
 export const getAlert = (id) => axios.get(base_url + '/' + id);
 

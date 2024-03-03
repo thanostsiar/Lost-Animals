@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -44,10 +45,10 @@ public class AnimalAlertController {
     }
 
     @PostMapping("/createAlert")
-    public ResponseEntity<?> createAnimalAlert(@RequestBody AnimalAlertDTO animalAlert) {
+    public ResponseEntity<?> createAnimalAlert(@RequestPart("alert")AnimalAlertDTO animalAlert, @RequestPart("imagePath") MultipartFile imagePath) {
 
         try {
-            AnimalAlert createdAlert = animalAlertService.createAlert(animalAlert);
+            AnimalAlert createdAlert = animalAlertService.createAlert(animalAlert, imagePath);
             return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e.getMessage());

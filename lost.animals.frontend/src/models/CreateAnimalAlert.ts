@@ -1,32 +1,26 @@
 class CreateAnimalAlert {
   title: string;
-  description?: string;
-  picture_url: string;
-  chip_number?: string;
-  last_location?: string;
-  animal: Animal;
-
-  constructor (animal: Animal, title: string, description: string, picture_url: string, chip_number?: string, last_location?: string) {
-      this.title = title;
-      this.description = description;
-      this.picture_url = picture_url;
-      this.chip_number = chip_number;
-      this.last_location = last_location;
-      this.animal = animal;
-  }
-
-}
-
-class Animal {
+  description: string;
+  imagePath: string;
+  chipNumber: string;
+  lastLocation: string;
   name: string;
   species: string;
   color: string;
+  userEmail: string
 
-  constructor(data: { name: string; species: string; color: string }) {
-      this.name = data.name;
-      this.species = data.species;
-      this.color = data.color;
+  constructor (name: string, title: string, description: string, chipNumber: string, lastLocation: string, species: string, color: string, imagePath: string, userEmail: string) {
+      this.title = title;
+      this.description = description;
+      this.chipNumber = chipNumber;
+      this.lastLocation = lastLocation;
+      this.name = name;
+      this.species = species;
+      this.color = color;
+      this.imagePath = imagePath;
+      this.userEmail = userEmail;
   }
+
 }
 
 export default CreateAnimalAlert;

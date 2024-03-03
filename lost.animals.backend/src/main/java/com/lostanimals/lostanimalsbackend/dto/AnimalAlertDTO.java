@@ -1,14 +1,11 @@
 package com.lostanimals.lostanimalsbackend.dto;
 
-import com.lostanimals.lostanimalsbackend.entity.Animal;
-import com.lostanimals.lostanimalsbackend.entity.User;
-
 public class AnimalAlertDTO {
     private String title;
     private String chipNumber;
     private String description;
     private String lastLocation;
-    private String image;
+    private String imagePath;
     private String name;
     private String species;
     private String color;
@@ -17,12 +14,12 @@ public class AnimalAlertDTO {
     public AnimalAlertDTO() {
     }
 
-    public AnimalAlertDTO(String title, String chipNumber, String description, String lastLocation, String image, String name, String species, String color, String userEmail) {
+    public AnimalAlertDTO(String title, String chipNumber, String description, String lastLocation, String imagePath, String name, String species, String color, String userEmail) {
         this.title = title;
         this.chipNumber = chipNumber;
         this.description = description;
         this.lastLocation = lastLocation;
-        this.image = image;
+        this.imagePath = imagePath;
         this.name = name;
         this.species = species;
         this.color = color;
@@ -62,11 +59,11 @@ public class AnimalAlertDTO {
     }
 
     public String getImage() {
-        return image;
+        return imagePath;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getName() {
