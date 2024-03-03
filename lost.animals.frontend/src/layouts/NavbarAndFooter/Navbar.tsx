@@ -2,6 +2,8 @@ import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { isUserLoggedIn, logout } from "../../Auth/AuthService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 
 export const Navbar = () => {
 
@@ -9,9 +11,9 @@ export const Navbar = () => {
 
   const navigator = useNavigate();
 
-  function handleLogout(){
-      logout();
-      navigator('/')
+  function handleLogout() {
+    logout();
+    navigator('/')
   }
 
 
@@ -38,22 +40,15 @@ export const Navbar = () => {
               <NavLink className='nav-link' to='/clinics'>Clinics</NavLink>
             </li>
             {
-              isAuthenticated && 
+              isAuthenticated &&
               <li className='nav-item'>
-              <NavLink className='nav-link' to='/createAlert'>Create Alert</NavLink>
-            </li>
+                <NavLink className='nav-link' to='/createAlert'>Create Alert</NavLink>
+              </li>
             }
-            {
-              isAuthenticated && 
-              <li className='nav-item'>
-              <NavLink className='nav-link' to='/chat'>Chat</NavLink>
-            </li>
-            }
-            
           </ul>
           <ul className='navbar-nav ms-auto'>
             {
-              !isAuthenticated && 
+              !isAuthenticated &&
               <li className='nav-item m-1'>
                 <Link type='button' className='btn btn-outline-light' to='/login'>Login</Link>
               </li>
@@ -61,15 +56,23 @@ export const Navbar = () => {
             {
               !isAuthenticated &&
               <li className='nav-item m-1'>
-              <Link type='button' className='btn secondary-color' to='/register'>Register</Link>
-            </li>
+                <Link type='button' className='btn secondary-color' to='/register'>Register</Link>
+              </li>
+            }
+            {
+              isAuthenticated &&
+              <li className='nav-item'>
+                <NavLink className='nav-link' to='/chat'>
+                  <FontAwesomeIcon icon={faComment} size="2x" title="Chat" />
+                </NavLink>
+              </li>
             }
             {
               isAuthenticated &&
               <li>
                 <button className='btn btn-outline-light' onClick={handleLogout}>Logout</button>
-              </li> 
-            }              
+              </li>
+            }
           </ul>
         </div>
       </div>
