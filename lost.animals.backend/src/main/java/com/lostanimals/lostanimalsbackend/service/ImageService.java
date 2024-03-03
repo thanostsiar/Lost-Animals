@@ -1,19 +1,20 @@
 package com.lostanimals.lostanimalsbackend.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 @Service
 public class ImageService {
 
-    private static final String UPLOAD_DIR = "src/main/resources/static/images";
-    private static final String STATIC_CONTENT_PATH = "images/";
+    private static final String UPLOAD_DIR = "upload";
+    private static final String STATIC_CONTENT_PATH = "upload/";
 
     public String saveImageToFileSystem(MultipartFile imageData, String fileName) {
 
@@ -40,7 +41,7 @@ public class ImageService {
         // Generate a unique filename using timestamp
         return "image_" + System.currentTimeMillis() + ".jpg";
     }
-
+    
     public String constructStaticContentPath(String fileName) {
         StringBuilder stringBuilder = new StringBuilder("http://localhost:8080/");
         stringBuilder.append(STATIC_CONTENT_PATH).append(fileName);

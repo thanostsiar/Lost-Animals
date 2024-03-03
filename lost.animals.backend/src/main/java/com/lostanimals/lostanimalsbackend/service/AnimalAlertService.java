@@ -9,7 +9,6 @@ import com.lostanimals.lostanimalsbackend.repository.AnimalAlertRepository;
 import com.lostanimals.lostanimalsbackend.repository.AnimalRepository;
 import com.lostanimals.lostanimalsbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,19 +26,16 @@ public class AnimalAlertService {
     private final AnimalService animalService;
     private final ImageService imageService;
 
-    private final FileStorageService fileStorageService;
-
     @Autowired
-    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, AnimalService animalService, ImageService imageService, FileStorageService fileStorageService) {
+    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, AnimalService animalService, ImageService imageService) {
         this.animalAlertRepository = animalAlertRepository;
         this.userRepository = userRepository;
         this.animalRepository = animalRepository;
         this.animalService = animalService;
         this.imageService = imageService;
-        this.fileStorageService = fileStorageService;
     }
 
-    public AnimalAlert createAlert(AnimalAlertDTO animalAlertDTO, MultipartFile imageFile) throws IOException {
+    public AnimalAlert createAlert(AnimalAlertDTO animalAlertDTO, MultipartFile imagePath) throws IOException {
         User user = userRepository.findByEmail(animalAlertDTO.getUserEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -58,8 +54,9 @@ public class AnimalAlertService {
             animal = animalRepository.save(animal);
         }
         String fileName = imageService.generateUniqueFileName();
-        imageService.saveImageToFileSystem(imageFile, fileName);
+        imageService.saveImageToFileSystem(imagePath, fileName);
         String staticContentPath = imageService.constructStaticContentPath(fileName);
+
 
         AnimalAlert animalAlert = new AnimalAlert();
         animalAlert.setTitle(animalAlertDTO.getTitle());

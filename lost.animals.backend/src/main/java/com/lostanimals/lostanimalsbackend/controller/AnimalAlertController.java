@@ -45,10 +45,10 @@ public class AnimalAlertController {
     }
 
     @PostMapping("/createAlert")
-    public ResponseEntity<?> createAnimalAlert(@RequestPart("alert") AnimalAlertDTO animalAlert, @RequestPart("imageFile") MultipartFile imageFile) {
+    public ResponseEntity<?> createAnimalAlert(@RequestPart("alert")AnimalAlertDTO animalAlert, @RequestPart("imagePath") MultipartFile imagePath) {
 
         try {
-            AnimalAlert createdAlert = animalAlertService.createAlert(animalAlert, imageFile);
+            AnimalAlert createdAlert = animalAlertService.createAlert(animalAlert, imagePath);
             return new ResponseEntity<>(createdAlert, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e.getMessage());

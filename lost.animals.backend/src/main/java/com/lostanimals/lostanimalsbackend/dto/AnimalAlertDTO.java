@@ -5,7 +5,7 @@ public class AnimalAlertDTO {
     private String chipNumber;
     private String description;
     private String lastLocation;
-    private String imageFile;
+    private String imagePath;
     private String name;
     private String species;
     private String color;
@@ -14,12 +14,12 @@ public class AnimalAlertDTO {
     public AnimalAlertDTO() {
     }
 
-    public AnimalAlertDTO(String title, String chipNumber, String description, String lastLocation, String imageFile, String name, String species, String color, String userEmail) {
+    public AnimalAlertDTO(String title, String chipNumber, String description, String lastLocation, String imagePath, String name, String species, String color, String userEmail) {
         this.title = title;
         this.chipNumber = chipNumber;
         this.description = description;
         this.lastLocation = lastLocation;
-        this.imageFile = imageFile;
+        this.imagePath = imagePath;
         this.name = name;
         this.species = species;
         this.color = color;
@@ -59,11 +59,11 @@ public class AnimalAlertDTO {
     }
 
     public String getImage() {
-        return imageFile;
+        return imagePath;
     }
 
-    public void setImage(String imageFile) {
-        this.imageFile = imageFile;
+    public void setImage(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getName() {

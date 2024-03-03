@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -70,16 +68,18 @@ public class SecurityConfiguration {
             .cors(cors -> corsConfigurationSource())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> {
+                auth.requestMatchers("/images/**").permitAll();
                 auth.requestMatchers("/api/auth/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/createAlert").hasAnyRole("ADMIN", "USER");
-                auth.requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "USER");
                 auth.requestMatchers("/ws/**").permitAll();
                 auth.requestMatchers("api/animal-alerts/search/**").permitAll();
                 auth.requestMatchers(HttpMethod.DELETE, "api/animal-alerts/**").hasRole("ADMIN");
                 auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                auth.requestMatchers("/images/**", "/js/**", "/css/**", "/webjars/**").permitAll();
+                auth.requestMatchers("/uploads/**").permitAll();
+                auth.requestMatchers("/upload/**").permitAll();
                 auth.anyRequest().authenticated();
             }).httpBasic(Customizer.withDefaults());
+
 
         http.exceptionHandling( exception -> exception
                 .authenticationEntryPoint(authenticationEntryPoint));
