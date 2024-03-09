@@ -2,8 +2,6 @@ package com.lostanimals.lostanimalsbackend.dto;
 
 import com.lostanimals.lostanimalsbackend.enums.Status;
 
-import java.time.LocalDateTime;
-
 public class Message {
 
     private String senderName;

@@ -1,7 +1,6 @@
 package com.lostanimals.lostanimalsbackend.entity;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "ROLE")

@@ -3,7 +3,6 @@ package com.lostanimals.lostanimalsbackend.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "ANIMAL_ALERT")

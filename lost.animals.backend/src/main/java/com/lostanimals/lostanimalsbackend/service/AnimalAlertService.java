@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,15 +22,13 @@ public class AnimalAlertService {
     private final AnimalAlertRepository animalAlertRepository;
     private final UserRepository userRepository;
     private final AnimalRepository animalRepository;
-    private final AnimalService animalService;
     private final ImageService imageService;
 
     @Autowired
-    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, AnimalService animalService, ImageService imageService) {
+    public AnimalAlertService(AnimalAlertRepository animalAlertRepository, UserRepository userRepository, AnimalRepository animalRepository, ImageService imageService) {
         this.animalAlertRepository = animalAlertRepository;
         this.userRepository = userRepository;
         this.animalRepository = animalRepository;
-        this.animalService = animalService;
         this.imageService = imageService;
     }
 
