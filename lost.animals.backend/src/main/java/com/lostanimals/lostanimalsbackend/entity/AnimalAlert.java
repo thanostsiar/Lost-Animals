@@ -15,13 +15,13 @@ public class AnimalAlert {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
     @Column(name = "IMAGE_PATH")
     private String imagePath;
 
-    @Column(name = "LAST_LOCATION")
+    @Column(name = "LAST_LOCATION", nullable = false)
     private String last_location;
 
     @ManyToOne(cascade = CascadeType.ALL)
