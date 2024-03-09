@@ -63,7 +63,7 @@ export const Navbar = () => {
               isAuthenticated &&
               <li className='nav-item'>
                 <NavLink className='nav-link' to='/chat'>
-                  <FontAwesomeIcon icon={faComment} size="2x" title="Chat" />
+                  Chat <FontAwesomeIcon icon={faComment} />
                 </NavLink>
               </li>
             }

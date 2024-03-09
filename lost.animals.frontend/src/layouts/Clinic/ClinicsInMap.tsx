@@ -33,7 +33,7 @@ const ClinicsInMap: React.FC = () => {
     }, [userLocation]);
 
     const calculateZoomLevel = () => {
-        if (!mapRef.current || !userLocation) return 12; // Default zoom level
+        if (!mapRef.current || !userLocation) return 12;
 
         const containerWidth = mapRef.current.offsetWidth;
         const containerHeight = mapRef.current.offsetHeight;
@@ -51,7 +51,7 @@ const ClinicsInMap: React.FC = () => {
 
         const request: google.maps.places.PlaceSearchRequest = {
             location: userLocation,
-            radius: 3000, // Use a number instead of a string
+            radius: 2000, 
             keyword: 'animal clinics',
         };
 
@@ -83,7 +83,6 @@ const ClinicsInMap: React.FC = () => {
             content: infoWindowContent,
         });
 
-        // Add a click listener to the marker to open the InfoWindow.
         marker.addListener('click', () => {
             infoWindow.open({
                 anchor: marker,
