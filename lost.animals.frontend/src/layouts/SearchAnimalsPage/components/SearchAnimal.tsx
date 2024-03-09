@@ -8,7 +8,6 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
 
     const [deleted, setDeleted] = useState<boolean>(false);
     const isAdmin = isAdminUser();
-    const navigate = useNavigate();
 
     async function removeAlert(id: number): Promise<void> {
         try {

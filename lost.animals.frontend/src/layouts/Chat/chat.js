@@ -14,7 +14,6 @@ const ChatRoom = () => {
         message: ''
       });
     useEffect(() => {
-      console.log(userData);
     }, [userData]);
 
     const connect =()=>{
@@ -84,7 +83,6 @@ const ChatRoom = () => {
                 message: userData.message,
                 status:"MESSAGE"
               };
-              console.log(chatMessage);
               stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
               setUserData({...userData,"message": ""});
             }

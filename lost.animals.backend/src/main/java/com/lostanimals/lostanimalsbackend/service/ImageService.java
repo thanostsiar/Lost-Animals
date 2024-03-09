@@ -1,10 +1,7 @@
 package com.lostanimals.lostanimalsbackend.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +27,7 @@ public class ImageService {
             fos.write(imageData.getBytes());
             fos.close();
 
-            return filePath; // Return the file path where the image is saved
+            return filePath;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to save image to filesystem");

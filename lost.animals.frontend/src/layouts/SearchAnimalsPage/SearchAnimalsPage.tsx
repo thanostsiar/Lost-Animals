@@ -26,7 +26,6 @@ export const SearchAnimalsPage = () => {
             } else {
                 url = baseUrl + searchUrl;
             }
-            console.log(url);
 
             const response = await fetch(url);
 
@@ -35,8 +34,6 @@ export const SearchAnimalsPage = () => {
             }
 
             const responseJson = await response.json();
-
-            console.log(responseJson);
 
             setTotalAmountOfAnimals(responseJson.length);
 
@@ -54,7 +51,6 @@ export const SearchAnimalsPage = () => {
             }
 
             setAnimals(loadedAlerts);
-            console.log(loadedAlerts);
             setIsLoading(false);
         };
         fetchAlerts().catch((error: any) => {
@@ -101,10 +97,7 @@ export const SearchAnimalsPage = () => {
     }
 
     const indexOfLastAnimal: number = currentPage * animalsPerPage;
-    const indexOfFirstAnimal: number = indexOfLastAnimal - animalsPerPage;
-    let lastItem = animalsPerPage * currentPage <= totalAmountOfAnimals ?
-                                          animalsPerPage * currentPage : totalAmountOfAnimals;
-
+   
     return (
         <div>
             <div className='container'>
