@@ -19,14 +19,14 @@ class AnimalAlertModel {
 
 class Animal {
     id: number;
-    chip_number: string;
+    chipNumber: string;
     name: string;
     species: string;
     color: string;
 
-    constructor(data: { id: number; chip_number: string; name: string; species: string; color: string }) {
+    constructor(data: { id: number; chipNumber: string; name: string; species: string; color: string }) {
         this.id = data.id;
-        this.chip_number = data.chip_number;
+        this.chipNumber = data.chipNumber;
         this.name = data.name;
         this.species = data.species;
         this.color = data.color;

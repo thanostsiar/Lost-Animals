@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
 import { saveAlert } from '../../../Auth/AnimalAlertService';
-import { getLoggedInUser, getToken, isAdminUser } from '../../../Auth/AuthService';
+import { getLoggedInUser } from '../../../Auth/AuthService';
 
 interface AlertData {
     title: string;

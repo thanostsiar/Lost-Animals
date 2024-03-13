@@ -2,8 +2,11 @@ import axios from "axios";
 
 const base_url = 'http://localhost:8080/api/auth';
 
+const findUserByEmailUrl = 'http://localhost:8080/api/user/findUser?email='
+
 export const registerAPICall = (registerObj) => axios.post(base_url + '/register', registerObj);
 
+export const findUserByEmail = (email) => axios.get(findUserByEmailUrl + email);
 
 export const loginAPICall = (email, password) => axios.post(base_url + '/login', { email, password});
 

@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
 import AnimalAlertModel from "../../../models/AnimalAlertModel";
 import { isAdminUser } from "../../../Auth/AuthService";
 import { deleteAlert, getAllAlerts } from "../../../Auth/AnimalAlertService";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props) => {
 
@@ -46,7 +45,7 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                                 alt='Animal'
                             />
                             :
-                            <img src={require('../../../Images/cat_on_leg.jpg')}
+                            <img src={require('../../../Images/dog_default.png')}
                                 width='200'
                                 height='200'
                                 alt='Animal'
@@ -62,7 +61,7 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                                 alt='Animal'
                             />
                             :
-                            <img src={require('../../../Images/cat_on_leg.jpg')}
+                            <img src={require('../../../Images/dog_default.png')}
                                 width='200'
                                 height='200'
                                 alt='Animal'
@@ -78,6 +77,12 @@ export const SearchAnimal: React.FC<{ animalAlert: AnimalAlertModel }> = (props)
                         <h4>
                             {props.animalAlert.title}
                         </h4>
+                        <p className='card-text'>
+                            Chip Number: {props.animalAlert.animal.chipNumber}
+                        </p>
+                        <p className='card-text'>
+                            Name: {props.animalAlert.animal.name}
+                        </p>
                         <p className='card-text'>
                             {props.animalAlert.description}
                         </p>

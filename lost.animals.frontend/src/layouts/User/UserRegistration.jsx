@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { registerAPICall } from "../../Auth/AuthService";
+import { findUserByEmail, registerAPICall } from "../../Auth/AuthService";
 import { Link, useNavigate } from "react-router-dom";
 
 const UserRegistration = () => {
@@ -77,13 +77,16 @@ const UserRegistration = () => {
             return;
         }
 
-        const register = { name, surname, email, password };
+        findUserByEmail(email)
+            .then(setError('User with this email already exists!'))
+            .catch(error => {
+                console.error('Error during API call:', error)
+            })
 
-        console.log(register);
+        const register = { name, surname, email, password };
 
         registerAPICall(register)
             .then((response) => {
-                console.log(response.data);
                 navigator('/login');
             }).catch(error => {
                 console.error('Error during API call:', error);
