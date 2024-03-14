@@ -51,7 +51,7 @@ const ClinicsInMap: React.FC = () => {
 
         const request: google.maps.places.PlaceSearchRequest = {
             location: userLocation,
-            radius: 2000, 
+            radius: 5000, 
             keyword: 'animal clinics',
         };
 
